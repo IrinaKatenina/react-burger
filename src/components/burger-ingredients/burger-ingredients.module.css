@@ -1,0 +1,22 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 600px;
+    max-width: 600px;
+    height: 100%;
+}
+
+.title {
+    line-height: 40px;
+}
+
+.ingredient_list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    overflow-y: scroll;
+}
+
+.tabs {
+    display: flex;
+}
