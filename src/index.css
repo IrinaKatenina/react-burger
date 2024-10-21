@@ -8,7 +8,7 @@ body {
     color: #F2F2F3;
 }
 
-.App {
+.app {
     height: 100vh;
     display: flex;
     flex-direction: column;
