@@ -33,7 +33,7 @@ export const BurgerIngredients = (props: Props) => {
                 </Tab>
             </div>
 
-            <div className={styles.ingredient_list}>
+            <div className={clsx(styles.ingredient_list, 'custom-scroll')}>
                 <IngredientList title={'Булки'} items={buns}/>
                 <IngredientList title={'Соусы'} items={sauces}/>
                 <IngredientList title={'Начинки'} items={mains}/>

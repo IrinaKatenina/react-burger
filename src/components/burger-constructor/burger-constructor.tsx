@@ -26,7 +26,7 @@ export const BurgerConstructor = (props: Props) => {
                         isLocked={true}
                     />
                 </li>
-                <div className={styles.scroll}>
+                <div className={clsx(styles.scroll, 'custom-scroll')}>
                     {items.map(item => (
                             <li key={item._id} className={styles.li}>
                                 <DragIcon className={styles.icon_drag} type="primary"/>
