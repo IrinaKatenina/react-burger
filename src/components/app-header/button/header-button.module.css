@@ -1,0 +1,36 @@
+.button {
+    display: flex;
+    gap: 8px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    border: none;
+    outline: none;
+    border-radius: var(--common-border-radius-s);
+    transition: var(--common-transition);
+    cursor: pointer;
+    color: var(--text-inactive-color);
+    background: transparent;
+    line-height: 24px;
+
+    &:hover {
+        color: var(--colors-interface-accent);
+
+        & > svg {
+            fill: var(--colors-interface-accent);
+        }
+    }
+
+
+    & > svg {
+        transition: var(--common-transition);
+        fill: var(--text-inactive-color);
+    }
+}
+
+.button_active {
+    color: var(--text-primary-color);
+
+    & > svg {
+        fill: var(--text-primary-color);
+    }
+}
