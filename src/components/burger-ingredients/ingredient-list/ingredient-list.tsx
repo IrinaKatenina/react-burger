@@ -1,4 +1,3 @@
-import React from "react";
 import {Ingredient} from "../ingredient/ingredient";
 import styles from "./ingredient-list.module.css";
 import clsx from "clsx";

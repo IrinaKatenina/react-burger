@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './burger-constructor.module.css';
 import clsx from "clsx";
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
