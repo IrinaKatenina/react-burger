@@ -1,9 +1,9 @@
 import {AppHeader} from "../app-header/app-header";
 import {BurgerIngredients} from "../burger-ingredients/burger-ingredients";
-import {BurgerConstructor} from "../burger-constructor/burger-constructor";
 import {useEffect, useState} from "react";
 import {IngredientModel} from "../../utils/model.ts";
 import styles from './app.module.css';
+import {BurgerConstructor} from "../burger-constructor/burger-constructor.tsx";
 
 const URL = 'https://norma.nomoreparties.space/api/ingredients';
 
@@ -23,8 +23,15 @@ function App() {
         <>
             <AppHeader/>
             <main className={styles.main}>
-                <BurgerIngredients data={data}/>
-                <BurgerConstructor data={data}/>
+                {data?.length ? (<>
+                            <BurgerIngredients data={data}/>
+                            <BurgerConstructor data={data}/>
+                        </>
+                    )
+                    : <div className={styles.loading_container}>
+                        <p className='text text_type_main-default'>Загрузка...</p>
+                    </div>
+                }
             </main>
         </>
     );
