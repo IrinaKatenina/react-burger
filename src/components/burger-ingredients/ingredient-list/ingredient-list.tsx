@@ -5,8 +5,9 @@ import {IngredientModel} from "../../../utils/model";
 
 interface Props {
     onClick?: () => void,
-    title: string
-    items: IngredientModel[];
+    title: string,
+    items: IngredientModel[],
+    onIngredientClick: (ingredient: IngredientModel) => void
 }
 
 export const IngredientList = (props: Props) => {
@@ -17,7 +18,7 @@ export const IngredientList = (props: Props) => {
             <ul className={clsx('pl-4 pr-4', styles.list)}>
                 {props.items.map(ingredient => (
                     <li key={ingredient._id}>
-                        <Ingredient ingredient={ingredient}></Ingredient>
+                        <Ingredient ingredient={ingredient} onClick={props.onIngredientClick}></Ingredient>
                     </li>
                 ))}
             </ul>

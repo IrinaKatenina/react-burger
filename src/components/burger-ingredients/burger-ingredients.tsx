@@ -4,6 +4,8 @@ import clsx from "clsx";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import {IngredientList} from "./ingredient-list/ingredient-list";
 import {IngredientModel} from "../../utils/model";
+import {Modal} from "../modal/modal.tsx";
+import {IngredientDetails} from "./ingredient-details/ingredient-details.tsx";
 
 interface Props {
     data: IngredientModel[];
@@ -11,10 +13,19 @@ interface Props {
 
 export const BurgerIngredients = (props: Props) => {
     const [current, setCurrent] = React.useState('bun');
+    const [currentIngredient, setCurrentIngredient] = React.useState<IngredientModel | null>(null);
 
     const buns = props.data.filter(item => item.type === 'bun');
     const sauces = props.data.filter(item => item.type === 'sauce');
     const mains = props.data.filter(item => item.type === 'main');
+
+    const onIngredientClick = (ingredient: IngredientModel) => {
+        setCurrentIngredient(ingredient);
+    };
+
+    const onCloseModal = () => {
+        setCurrentIngredient(null);
+    };
 
     return (
         <section className={styles.container}>
@@ -33,11 +44,16 @@ export const BurgerIngredients = (props: Props) => {
             </div>
 
             <div className={clsx(styles.ingredient_list, 'custom-scroll')}>
-                <IngredientList title={'Булки'} items={buns}/>
-                <IngredientList title={'Соусы'} items={sauces}/>
-                <IngredientList title={'Начинки'} items={mains}/>
+                <IngredientList title={'Булки'} items={buns} onIngredientClick={onIngredientClick}/>
+                <IngredientList title={'Соусы'} items={sauces} onIngredientClick={onIngredientClick}/>
+                <IngredientList title={'Начинки'} items={mains} onIngredientClick={onIngredientClick}/>
             </div>
 
+            {currentIngredient && (
+                <Modal header={'Детали ингредиента'} onClose={onCloseModal}>
+                    <IngredientDetails model={currentIngredient}/>
+                </Modal>
+            )}
         </section>
     );
 };
