@@ -12,10 +12,15 @@ function App() {
 
     useEffect(() => {
         fetch(URL)
-            .then(res => res.json())
+            .then(res => {
+                if (res.ok) {
+                    return res.json();
+                }
+                return Promise.reject(`Ошибка ${res.status}`);
+            })
             .then((resData: { data: Array<IngredientModel> }) => setData(resData.data ?? []))
             .catch(err => {
-                console.log('Could not load data', err);
+                console.error('Could not load data', err);
             });
     }, []);
 

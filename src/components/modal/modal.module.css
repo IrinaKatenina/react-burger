@@ -9,6 +9,7 @@
 
     background-color: var(--background);
     border-radius: 40px;
+    z-index: 102;
 }
 
 .header {
