@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.image {
+    width: 520px;
+    height: 240px;
+}
+
+.macronutrients {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.macronutrient {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 112px;
+}
