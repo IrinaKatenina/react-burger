@@ -3,7 +3,7 @@ import {IngredientModel, StateModel} from "../utils/model.ts";
 
 export const initialState: StateModel = {
     allIngredients: [],
-    constructorIngredients: [],
+    constructorIngredients: {bun: null, ingredients: []},
     currentIngredient: null,
     order: {orderNumber: "034536"},
     loading: false,
@@ -21,7 +21,6 @@ export const rootReducer = (state: StateModel = initialState, action: ActionMode
             return {
                 ...state,
                 allIngredients: [...action.payload as Array<IngredientModel>],
-                constructorIngredients: [(action.payload as Array<IngredientModel>).find(i => i.type === 'bun')],
                 loading: false,
                 error: undefined
             };

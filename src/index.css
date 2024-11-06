@@ -17,3 +17,20 @@ body {
 * {
     box-sizing: border-box;
 }
+
+
+.constructor-element._empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.constructor-element._empty .constructor-element__text {
+    justify-content: center;
+}
+
+.constructor-element._empty .constructor-element__image,
+.constructor-element._empty .constructor-element__price,
+.constructor-element._empty .constructor-element__action {
+    display: none;
+}

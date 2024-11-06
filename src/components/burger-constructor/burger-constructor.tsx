@@ -2,17 +2,21 @@ import styles from './burger-constructor.module.css';
 import clsx from "clsx";
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {StateModel} from "../../utils/model";
-import {useState} from "react";
+import {useMemo, useState} from "react";
 import {Modal} from "../modal/modal.tsx";
 import {OrderDetails} from "../order-details/order-details.tsx";
 import {useSelector} from "react-redux";
 
 export const BurgerConstructor = () => {
-    const total = 610;
     const data = useSelector((store: StateModel) => store.constructorIngredients);
 
-    const bunItem = data?.find((item) => item.type === 'bun');
-    const items = data?.filter((item) => item.type !== 'bun');
+    const bunItem = data.bun;
+    const items = data.ingredients?.filter((item) => item.type !== 'bun');
+
+    const totalPrice = useMemo(() => {
+        const itemsPrice = items.reduce((acc, item) => acc + (item?.price ?? 0), 0);
+        return (bunItem?.price ?? 0) * 2 + itemsPrice;
+    }, [bunItem, items]);
 
     const [isPopupVisible, setPopupVisible] = useState(false);
 
@@ -24,20 +28,32 @@ export const BurgerConstructor = () => {
         setPopupVisible(false);
     };
 
-    return (bunItem && items && (
+    return ((
             <section className={clsx('pt-25 pl-4 pr-4', styles.container)}>
                 <ul className={styles.list}>
-                    <li key={bunItem._id} className={clsx('pl-8', styles.li)}>
-                        <ConstructorElement
-                            type={'top'}
-                            text={bunItem.name + " (верх)"}
-                            price={bunItem.price}
-                            thumbnail={bunItem.image}
-                            isLocked={true}
-                        />
+
+                    <li key={bunItem?._id} className={clsx('pl-8', styles.li)}>
+                        {bunItem ?
+                            <ConstructorElement
+                                type={'top'}
+                                text={bunItem.name + " (верх)"}
+                                price={bunItem.price}
+                                thumbnail={bunItem.image}
+                                isLocked={true}
+                            /> :
+                            <ConstructorElement
+                                extraClass={'_empty'}
+                                type={'top'}
+                                text={'Выберите булку'}
+                                price={0}
+                                thumbnail={''}
+                                isLocked={true}
+                            />}
                     </li>
+
                     <div className={clsx(styles.scroll, 'custom-scroll')}>
-                        {items.map(item => (
+                        {items?.length ?
+                            items.map(item => (
                                 <li key={item._id} className={styles.li}>
                                     <DragIcon className={styles.icon_drag} type="primary"/>
                                     <ConstructorElement
@@ -46,23 +62,40 @@ export const BurgerConstructor = () => {
                                         thumbnail={item.image}
                                     />
                                 </li>
-                            )
-                        )}
+                            )) :
+                            <li key={"center"} className={clsx('pl-8', styles.li)}>
+                                <ConstructorElement
+                                    extraClass={'_empty '}
+                                    text={'Выберите начинку'}
+                                    price={0}
+                                    thumbnail={''}
+                                />
+                            </li>
+                        }
                     </div>
-                    <li key={bunItem._id + "_bottom"} className={clsx('pl-8', styles.li)}>
-                        <ConstructorElement
-                            type={'bottom'}
-                            text={bunItem.name + " (низ)"}
-                            price={bunItem.price}
-                            thumbnail={bunItem.image}
-                            isLocked={true}
-                        />
+                    <li key={bunItem?._id + "_bottom"} className={clsx('pl-8', styles.li)}>
+                        {bunItem ?
+                            <ConstructorElement
+                                type={'bottom'}
+                                text={bunItem.name + " (низ)"}
+                                price={bunItem.price}
+                                thumbnail={bunItem.image}
+                                isLocked={true}
+                            /> :
+                            <ConstructorElement
+                                extraClass={'_empty'}
+                                type={'bottom'}
+                                text={'Выберите булку'}
+                                price={0}
+                                thumbnail={''}
+                                isLocked={true}
+                            />}
                     </li>
                 </ul>
 
                 <div className={clsx('pt-10 pb-10', styles.toolbar)}>
                     <div className={clsx('text text_type_digits-medium', styles.price)}>
-                        {total}
+                        {totalPrice}
                         <CurrencyIcon type="primary"/>
                     </div>
 

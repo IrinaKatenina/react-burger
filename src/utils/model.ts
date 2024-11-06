@@ -17,9 +17,14 @@ export interface OrderModel {
     orderNumber: string;
 }
 
+export interface ConstructorModel {
+    bun: IngredientModel | null,
+    ingredients: IngredientModel[]
+}
+
 export interface StateModel {
     allIngredients: IngredientModel[],
-    constructorIngredients: IngredientModel[],
+    constructorIngredients: ConstructorModel,
     currentIngredient: IngredientModel | null,
     order: OrderModel | null,
 
