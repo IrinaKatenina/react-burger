@@ -1,11 +1,13 @@
 import styles from "./order-details.module.css";
 import clsx from "clsx";
+import {useSelector} from "react-redux";
+import {StateModel} from "../../utils/model.ts";
 
 const IMAGE_URL = 'src/images/done.png';
 
 export function OrderDetails() {
 
-    const orderNumber = "034536";
+    const orderNumber = useSelector((state: StateModel) => state.order?.orderNumber);
 
     return (
         <div className={styles.container}>

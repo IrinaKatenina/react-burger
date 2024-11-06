@@ -1,41 +1,40 @@
 import {AppHeader} from "../app-header/app-header";
 import {BurgerIngredients} from "../burger-ingredients/burger-ingredients";
-import {useEffect, useState} from "react";
-import {IngredientModel} from "../../utils/model.ts";
+import {useEffect} from "react";
+import {StateModel} from "../../utils/model.ts";
 import styles from './app.module.css';
 import {BurgerConstructor} from "../burger-constructor/burger-constructor.tsx";
+import {useDispatch, useSelector} from "react-redux";
+import {loadAllIngredients,} from "../../services/actions.tsx";
 
-const URL = 'https://norma.nomoreparties.space/api/ingredients';
 
 function App() {
-    const [data, setData] = useState<Array<IngredientModel>>([]);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        fetch(URL)
-            .then(res => {
-                if (res.ok) {
-                    return res.json();
-                }
-                return Promise.reject(`Ошибка ${res.status}`);
-            })
-            .then((resData: { data: Array<IngredientModel> }) => setData(resData.data ?? []))
-            .catch(err => {
-                console.error('Could not load data', err);
-            });
+        dispatch(loadAllIngredients());
     }, []);
+
+    const hasData = useSelector((store: StateModel) => store.allIngredients?.length);
+    const loading = useSelector((store: StateModel) => store.loading);
+    const error = useSelector((store: StateModel) => store.error);
 
     return (
         <>
             <AppHeader/>
             <main className={styles.main}>
-                {data?.length ? (<>
-                            <BurgerIngredients data={data}/>
-                            <BurgerConstructor data={data}/>
-                        </>
-                    )
-                    : <div className={styles.loading_container}>
+                {loading && !hasData ? (
+                    <div className={styles.loading_container}>
                         <p className='text text_type_main-default'>Загрузка...</p>
                     </div>
+                ) : (!loading && !hasData && error) ? (
+                    <p>Ошибка: {error}</p>
+                ) : (
+                    <>
+                        <BurgerIngredients/>
+                        <BurgerConstructor/>
+                    </>)
                 }
             </main>
         </>

@@ -3,28 +3,29 @@ import styles from './burger-ingredients.module.css';
 import clsx from "clsx";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import {IngredientList} from "./ingredient-list/ingredient-list";
-import {IngredientModel} from "../../utils/model";
+import {IngredientModel, StateModel} from "../../utils/model";
 import {Modal} from "../modal/modal.tsx";
 import {IngredientDetails} from "./ingredient-details/ingredient-details.tsx";
+import {useDispatch, useSelector} from "react-redux";
+import {SET_CURRENT_INGREDIENT} from "../../services/actions.tsx";
 
-interface Props {
-    data: IngredientModel[];
-}
-
-export const BurgerIngredients = (props: Props) => {
+export const BurgerIngredients = () => {
+    const dispatch = useDispatch();
     const [current, setCurrent] = React.useState('bun');
-    const [currentIngredient, setCurrentIngredient] = React.useState<IngredientModel | null>(null);
+    const currentIngredient = useSelector((store: StateModel) => store.currentIngredient);
 
-    const buns = props.data.filter(item => item.type === 'bun');
-    const sauces = props.data.filter(item => item.type === 'sauce');
-    const mains = props.data.filter(item => item.type === 'main');
+    const allIngredients = useSelector((store: StateModel) => store.allIngredients);
+
+    const buns = allIngredients.filter(item => item.type === 'bun');
+    const sauces = allIngredients.filter(item => item.type === 'sauce');
+    const mains = allIngredients.filter(item => item.type === 'main');
 
     const onIngredientClick = (ingredient: IngredientModel) => {
-        setCurrentIngredient(ingredient);
+        dispatch({type: SET_CURRENT_INGREDIENT, payload: ingredient});
     };
 
     const onCloseModal = () => {
-        setCurrentIngredient(null);
+        dispatch({type: SET_CURRENT_INGREDIENT, payload: null});
     };
 
     return (
@@ -51,7 +52,7 @@ export const BurgerIngredients = (props: Props) => {
 
             {currentIngredient && (
                 <Modal header={'Детали ингредиента'} onClose={onCloseModal}>
-                    <IngredientDetails model={currentIngredient}/>
+                    <IngredientDetails/>
                 </Modal>
             )}
         </section>

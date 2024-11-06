@@ -1,19 +1,18 @@
 import styles from './burger-constructor.module.css';
 import clsx from "clsx";
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {IngredientModel} from "../../utils/model";
+import {StateModel} from "../../utils/model";
 import {useState} from "react";
 import {Modal} from "../modal/modal.tsx";
 import {OrderDetails} from "../order-details/order-details.tsx";
+import {useSelector} from "react-redux";
 
-interface Props {
-    data: IngredientModel[];
-}
-
-export const BurgerConstructor = (props: Props) => {
+export const BurgerConstructor = () => {
     const total = 610;
-    const bunItem = props?.data?.find((item) => item.type === 'bun');
-    const items = props?.data?.filter((item) => item.type !== 'bun');
+    const data = useSelector((store: StateModel) => store.constructorIngredients);
+
+    const bunItem = data?.find((item) => item.type === 'bun');
+    const items = data?.filter((item) => item.type !== 'bun');
 
     const [isPopupVisible, setPopupVisible] = useState(false);
 
