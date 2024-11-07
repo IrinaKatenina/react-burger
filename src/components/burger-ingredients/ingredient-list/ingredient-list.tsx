@@ -11,12 +11,12 @@ interface Props {
     onIngredientClick: (ingredient: IngredientModel) => void
 }
 
-export const IngredientList = forwardRef((props: Props, ref: ForwardedRef<HTMLUListElement>) => {
+export const IngredientList = forwardRef((props: Props, ref: ForwardedRef<HTMLParagraphElement>) => {
 
     return (
         <>
-            <p className={'text text_type_main-medium'}>{props.title}</p>
-            <ul className={clsx('pl-4 pr-4', styles.list)} ref={ref}>
+            <p className={'text text_type_main-medium'} ref={ref}>{props.title}</p>
+            <ul className={clsx('pl-4 pr-4', styles.list)}>
                 {props.items.map(ingredient => (
                     <li key={ingredient._id}>
                         <Ingredient ingredient={ingredient} onClick={props.onIngredientClick}></Ingredient>

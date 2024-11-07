@@ -1,11 +1,11 @@
 import {AppHeader} from "../app-header/app-header";
 import {BurgerIngredients} from "../burger-ingredients/burger-ingredients";
 import {useEffect} from "react";
-import {StateModel} from "../../utils/model.ts";
 import styles from './app.module.css';
-import {BurgerConstructor} from "../burger-constructor/burger-constructor.tsx";
 import {useDispatch, useSelector} from "react-redux";
-import {loadAllIngredients,} from "../../services/actions.tsx";
+import {loadAllIngredients,} from "../../services/ingredients/actions.ts";
+import {BurgerConstructor} from "../burger-constructor/burger-constructor.tsx";
+import {getError, hasAllIngredientsData, isLoading} from "../../services/ingredients/selectors.ts";
 
 
 function App() {
@@ -16,9 +16,9 @@ function App() {
         dispatch(loadAllIngredients());
     }, []);
 
-    const hasData = useSelector((store: StateModel) => store.allIngredients?.length);
-    const loading = useSelector((store: StateModel) => store.loading);
-    const error = useSelector((store: StateModel) => store.error);
+    const hasData = useSelector(hasAllIngredientsData);
+    const loading = useSelector(isLoading);
+    const error = useSelector(getError);
 
     return (
         <>

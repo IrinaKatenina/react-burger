@@ -1,14 +1,16 @@
 import styles from './burger-constructor.module.css';
 import clsx from "clsx";
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {StateModel} from "../../utils/model";
 import {useMemo, useState} from "react";
 import {Modal} from "../modal/modal.tsx";
 import {OrderDetails} from "../order-details/order-details.tsx";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {clearOrder, makeOrder} from "../../services/order/actions.ts";
+import {getConstructorIngredients} from "../../services/burger-constructor/selectors.ts";
 
 export const BurgerConstructor = () => {
-    const data = useSelector((store: StateModel) => store.constructorIngredients);
+    const dispatch = useDispatch();
+    const data = useSelector(getConstructorIngredients);
 
     const bunItem = data.bun;
     const items = data.ingredients?.filter((item) => item.type !== 'bun');
@@ -21,10 +23,14 @@ export const BurgerConstructor = () => {
     const [isPopupVisible, setPopupVisible] = useState(false);
 
     const onMakeOrder = () => {
+        const ingredients = [bunItem?._id, items.map(item => item?._id), bunItem?._id];
+        dispatch(makeOrder({ingredients: ingredients}));
+
         setPopupVisible(true);
     };
 
     const onCloseModal = () => {
+        dispatch(clearOrder());
         setPopupVisible(false);
     };
 
@@ -99,7 +105,8 @@ export const BurgerConstructor = () => {
                         <CurrencyIcon type="primary"/>
                     </div>
 
-                    <Button htmlType="button" type="primary" size="large" onClick={onMakeOrder}>
+                    <Button htmlType="button" type="primary" size="large" onClick={onMakeOrder}
+                            disabled={!bunItem || !items?.length}>
                         Оформить заказ
                     </Button>
                 </div>

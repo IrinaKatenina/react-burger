@@ -1,11 +1,11 @@
-import {StateModel} from "../../../utils/model.ts";
 import styles from "./ingredient-details.module.css";
 import clsx from "clsx";
 import {useSelector} from "react-redux";
+import {getCurrentIngredient} from "../../../services/current-ingredient/selectors.ts";
 
 export function IngredientDetails() {
 
-    const model = useSelector((store: StateModel) => store.currentIngredient);
+    const model = useSelector(getCurrentIngredient);
 
     return (
         model && <div className={styles.container}>

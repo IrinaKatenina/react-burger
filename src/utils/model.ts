@@ -13,21 +13,39 @@ export interface IngredientModel {
     __v: number;
 }
 
-export interface OrderModel {
-    orderNumber: string;
-}
-
 export interface ConstructorModel {
     bun: IngredientModel | null,
     ingredients: IngredientModel[]
 }
 
-export interface StateModel {
+export interface IngredientsStateModel {
     allIngredients: IngredientModel[],
-    constructorIngredients: ConstructorModel,
-    currentIngredient: IngredientModel | null,
-    order: OrderModel | null,
-
-    loading: boolean,
+    loading?: boolean,
     error?: string
+}
+
+export interface ConstructorStateModel {
+    constructorIngredients: ConstructorModel
+}
+
+export interface CurrentIngredientStateModel {
+    currentIngredient: IngredientModel | null
+}
+
+export interface OrderStateModel {
+    orderNumber?: string
+    loading?: boolean,
+    error?: string
+}
+
+export interface StateModel {
+    ingredients: IngredientsStateModel,
+    burgerConstructor: ConstructorStateModel,
+    currentIngredient: CurrentIngredientStateModel,
+    order?: OrderStateModel,
+}
+
+export interface ActionModel {
+    type: string,
+    payload?: any
 }

@@ -3,34 +3,36 @@ import styles from './burger-ingredients.module.css';
 import clsx from "clsx";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import {IngredientList} from "./ingredient-list/ingredient-list";
-import {IngredientModel, StateModel} from "../../utils/model";
+import {IngredientModel} from "../../utils/model";
 import {Modal} from "../modal/modal.tsx";
 import {IngredientDetails} from "./ingredient-details/ingredient-details.tsx";
 import {useDispatch, useSelector} from "react-redux";
-import {SET_CURRENT_INGREDIENT} from "../../services/actions.tsx";
+import {setCurrentIngredient} from "../../services/current-ingredient/actions.ts";
+import {getCurrentIngredient} from "../../services/current-ingredient/selectors.ts";
+import {getAllIngredients} from "../../services/ingredients/selectors.ts";
 
 export const BurgerIngredients = () => {
     const dispatch = useDispatch();
     const [currentTab, setCurrentTab] = React.useState('bun');
-    const currentIngredient = useSelector((store: StateModel) => store.currentIngredient);
+    const currentIngredient = useSelector(getCurrentIngredient);
 
-    const allIngredients = useSelector((store: StateModel) => store.allIngredients);
+    const allIngredients = useSelector(getAllIngredients);
 
     const buns = allIngredients.filter(item => item.type === 'bun');
     const sauces = allIngredients.filter(item => item.type === 'sauce');
     const mains = allIngredients.filter(item => item.type === 'main');
 
-    const containerRef = React.createRef<HTMLDivElement>();
-    const bunsRef = React.createRef<HTMLUListElement>();
-    const saucesRef = React.createRef<HTMLUListElement>();
-    const mainsRef = React.createRef<HTMLUListElement>();
+    const tabsRef = React.createRef<HTMLDivElement>();
+    const bunsRef = React.createRef<HTMLParagraphElement>();
+    const saucesRef = React.createRef<HTMLParagraphElement>();
+    const mainsRef = React.createRef<HTMLParagraphElement>();
 
     const onIngredientClick = (ingredient: IngredientModel) => {
-        dispatch({type: SET_CURRENT_INGREDIENT, payload: ingredient});
+        dispatch(setCurrentIngredient(ingredient));
     };
 
     const onCloseModal = () => {
-        dispatch({type: SET_CURRENT_INGREDIENT, payload: null});
+        dispatch(setCurrentIngredient(null));
     };
 
     const onTabClick = ((tab: string) => {
@@ -49,30 +51,26 @@ export const BurgerIngredients = () => {
         }
     });
 
-    const onScroll = useCallback((e: React.UIEvent) => {
-        const {scrollTop} = e.currentTarget;
-        let tab = 'bun';
+    const onScroll = useCallback(() => {
+        const tabBottom = (tabsRef.current?.getBoundingClientRect().top ?? 0) + (tabsRef.current?.offsetHeight ?? 0);
 
-        if (scrollTop < (bunsRef.current?.offsetHeight ?? 0)) {
-            tab = 'bun';
-        }
+        const tabs = ['bun', 'sauce', 'mains'];
+        const refs = [bunsRef, saucesRef, mainsRef];
 
-        if (scrollTop > (bunsRef.current?.offsetHeight ?? 0) && scrollTop < (saucesRef.current?.offsetHeight ?? 0)) {
-            tab = 'sauce';
-        }
+        const distances = refs.map((ref) => {
+            return Math.abs((ref.current?.getBoundingClientRect().top ?? 0) - tabBottom);
+        });
 
-        if (scrollTop > (saucesRef.current?.offsetHeight ?? 0)) {
-            tab = 'mains';
-        }
+        const closestIndex = distances.indexOf(Math.min(...distances));
 
-        setCurrentTab(tab);
-    }, [bunsRef, saucesRef]);
+        setCurrentTab(tabs[closestIndex]);
+    }, [bunsRef, saucesRef, mainsRef, tabsRef]);
 
     return (
         <section className={styles.container}>
             <h1 className={clsx('text text_type_main-large pt-10 pb-5', styles.title)}>Соберите бургер</h1>
 
-            <div className={clsx('mb-10', styles.tabs)}>
+            <div className={clsx('mb-10', styles.tabs)} ref={tabsRef}>
                 <Tab value="bun" active={currentTab === 'bun'} onClick={onTabClick}>
                     Булки
                 </Tab>
@@ -84,7 +82,7 @@ export const BurgerIngredients = () => {
                 </Tab>
             </div>
 
-            <div className={clsx(styles.ingredient_list, 'custom-scroll')} onScroll={onScroll} ref={containerRef}>
+            <div className={clsx(styles.ingredient_list, 'custom-scroll')} onScroll={onScroll}>
                 <IngredientList title={'Булки'} items={buns} onIngredientClick={onIngredientClick} ref={bunsRef}/>
                 <IngredientList title={'Соусы'} items={sauces} onIngredientClick={onIngredientClick} ref={saucesRef}/>
                 <IngredientList title={'Начинки'} items={mains} onIngredientClick={onIngredientClick} ref={mainsRef}/>
