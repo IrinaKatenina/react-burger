@@ -9,18 +9,14 @@ import {IngredientDetails} from "./ingredient-details/ingredient-details.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {setCurrentIngredient} from "../../services/current-ingredient/actions.ts";
 import {getCurrentIngredient} from "../../services/current-ingredient/selectors.ts";
-import {getAllIngredients} from "../../services/ingredients/selectors.ts";
+import {getIngredientsByType} from "../../services/ingredients/selectors.ts";
 
 export const BurgerIngredients = () => {
     const dispatch = useDispatch();
     const [currentTab, setCurrentTab] = React.useState('bun');
     const currentIngredient = useSelector(getCurrentIngredient);
 
-    const allIngredients = useSelector(getAllIngredients);
-
-    const buns = allIngredients.filter(item => item.type === 'bun');
-    const sauces = allIngredients.filter(item => item.type === 'sauce');
-    const mains = allIngredients.filter(item => item.type === 'main');
+    const {buns, sauces, mains} = useSelector(getIngredientsByType);
 
     const tabsRef = React.createRef<HTMLDivElement>();
     const bunsRef = React.createRef<HTMLParagraphElement>();

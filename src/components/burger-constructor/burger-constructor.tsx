@@ -10,21 +10,18 @@ import {getConstructorIngredients} from "../../services/burger-constructor/selec
 
 export const BurgerConstructor = () => {
     const dispatch = useDispatch();
-    const data = useSelector(getConstructorIngredients);
-
-    const bunItem = data.bun;
-    const items = data.ingredients?.filter((item) => item.type !== 'bun');
+    const {bun, ingredients} = useSelector(getConstructorIngredients);
 
     const totalPrice = useMemo(() => {
-        const itemsPrice = items.reduce((acc, item) => acc + (item?.price ?? 0), 0);
-        return (bunItem?.price ?? 0) * 2 + itemsPrice;
-    }, [bunItem, items]);
+        const itemsPrice = ingredients.reduce((acc, item) => acc + (item?.price ?? 0), 0);
+        return (bun?.price ?? 0) * 2 + itemsPrice;
+    }, [bun, ingredients]);
 
     const [isPopupVisible, setPopupVisible] = useState(false);
 
     const onMakeOrder = () => {
-        const ingredients = [bunItem?._id, items.map(item => item?._id), bunItem?._id];
-        dispatch(makeOrder({ingredients: ingredients}));
+        const items = [bun?._id, ingredients.map(item => item?._id), bun?._id];
+        dispatch(makeOrder({ingredients: items}));
 
         setPopupVisible(true);
     };
@@ -38,13 +35,13 @@ export const BurgerConstructor = () => {
             <section className={clsx('pt-25 pl-4 pr-4', styles.container)}>
                 <ul className={styles.list}>
 
-                    <li key={bunItem?._id} className={clsx('pl-8', styles.li)}>
-                        {bunItem ?
+                    <li key={bun?._id} className={clsx('pl-8', styles.li)}>
+                        {bun ?
                             <ConstructorElement
                                 type={'top'}
-                                text={bunItem.name + " (верх)"}
-                                price={bunItem.price}
-                                thumbnail={bunItem.image}
+                                text={bun.name + " (верх)"}
+                                price={bun.price}
+                                thumbnail={bun.image}
                                 isLocked={true}
                             /> :
                             <ConstructorElement
@@ -58,8 +55,8 @@ export const BurgerConstructor = () => {
                     </li>
 
                     <div className={clsx(styles.scroll, 'custom-scroll')}>
-                        {items?.length ?
-                            items.map(item => (
+                        {ingredients?.length ?
+                            ingredients.map(item => (
                                 <li key={item._id} className={styles.li}>
                                     <DragIcon className={styles.icon_drag} type="primary"/>
                                     <ConstructorElement
@@ -79,13 +76,13 @@ export const BurgerConstructor = () => {
                             </li>
                         }
                     </div>
-                    <li key={bunItem?._id + "_bottom"} className={clsx('pl-8', styles.li)}>
-                        {bunItem ?
+                    <li key={bun?._id + "_bottom"} className={clsx('pl-8', styles.li)}>
+                        {bun ?
                             <ConstructorElement
                                 type={'bottom'}
-                                text={bunItem.name + " (низ)"}
-                                price={bunItem.price}
-                                thumbnail={bunItem.image}
+                                text={bun.name + " (низ)"}
+                                price={bun.price}
+                                thumbnail={bun.image}
                                 isLocked={true}
                             /> :
                             <ConstructorElement
@@ -106,7 +103,7 @@ export const BurgerConstructor = () => {
                     </div>
 
                     <Button htmlType="button" type="primary" size="large" onClick={onMakeOrder}
-                            disabled={!bunItem || !items?.length}>
+                            disabled={!bun || !ingredients?.length}>
                         Оформить заказ
                     </Button>
                 </div>
