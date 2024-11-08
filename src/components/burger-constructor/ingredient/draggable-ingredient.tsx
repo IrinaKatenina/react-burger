@@ -27,7 +27,6 @@ export const DraggableIngredient = (props: Props) => {
 
 
     const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
-        console.log("MOVE", dragIndex, hoverIndex)
         dispatch({type: MOVE_INGREDIENT, payload: {fromIndex: dragIndex, toIndex: hoverIndex}});
     }, [])
 
