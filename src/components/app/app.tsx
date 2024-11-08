@@ -6,6 +6,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {loadAllIngredients,} from "../../services/ingredients/actions.ts";
 import {BurgerConstructor} from "../burger-constructor/burger-constructor.tsx";
 import {getError, hasAllIngredientsData, isLoading} from "../../services/ingredients/selectors.ts";
+import {DndProvider} from "react-dnd";
+import {HTML5Backend} from "react-dnd-html5-backend";
 
 
 function App() {
@@ -31,10 +33,11 @@ function App() {
                 ) : (!loading && !hasData && error) ? (
                     <p>Ошибка: {error}</p>
                 ) : (
-                    <>
+                    <DndProvider backend={HTML5Backend}>
                         <BurgerIngredients/>
                         <BurgerConstructor/>
-                    </>)
+                    </DndProvider>
+                )
                 }
             </main>
         </>

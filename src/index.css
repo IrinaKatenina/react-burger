@@ -19,10 +19,18 @@ body {
 }
 
 
+.constructor-element {
+    border: 2px dashed transparent;
+}
+
 .constructor-element._empty {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.constructor-element._active {
+    border: 2px dashed #4C4CFF;
 }
 
 .constructor-element._empty .constructor-element__text {

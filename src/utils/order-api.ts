@@ -5,7 +5,8 @@ export const makeOrderRequest = (data: { ingredients: Array<string> }) => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
-        }, body: JSON.stringify(data)
+        },
+        body: JSON.stringify(data)
     }).then(res => {
         if (res.ok) {
             return res.json();

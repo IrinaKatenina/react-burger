@@ -1,12 +1,15 @@
 import styles from './burger-constructor.module.css';
 import clsx from "clsx";
 import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useMemo, useState} from "react";
+import {useCallback, useMemo, useState} from "react";
 import {Modal} from "../modal/modal.tsx";
 import {OrderDetails} from "../order-details/order-details.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {clearOrder, makeOrder} from "../../services/order/actions.ts";
 import {getConstructorIngredients} from "../../services/burger-constructor/selectors.ts";
+import {useDrop} from "react-dnd";
+import {IngredientModel} from "../../utils/model.ts";
+import {ADD_INGREDIENT, REMOVE_INGREDIENT, UPDATE_BUN} from "../../services/burger-constructor/actions.ts";
 
 export const BurgerConstructor = () => {
     const dispatch = useDispatch();
@@ -31,13 +34,54 @@ export const BurgerConstructor = () => {
         setPopupVisible(false);
     };
 
+    const bunHandleDrop = (ingredient: IngredientModel) => {
+        dispatch({type: UPDATE_BUN, payload: ingredient});
+    };
+
+    const ingredientHandleDrop = (ingredient: IngredientModel) => {
+        dispatch({type: ADD_INGREDIENT, payload: ingredient});
+    };
+
+    const [{topBunCanDrop}, bunTopDropRef] = useDrop(() => ({
+        accept: "bun",
+        drop: (ingredient: IngredientModel) => {
+            bunHandleDrop(ingredient);
+        },
+        collect: (monitor) => ({
+            topBunCanDrop: monitor.canDrop(),
+        }),
+    }));
+
+    const [{bottomBunCanDrop}, bunBottomDropRef] = useDrop(() => ({
+        accept: "bun",
+        drop: (ingredient: IngredientModel) => {
+            bunHandleDrop(ingredient);
+        },
+        collect: (monitor) => ({
+            bottomBunCanDrop: monitor.canDrop(),
+        }),
+    }));
+
+    const [{canDrop}, mainDropRef] = useDrop(() => ({
+        accept: "ingredient",
+        drop: (ingredient: IngredientModel) => (ingredientHandleDrop(ingredient)),
+        collect: (monitor) => ({
+            canDrop: monitor.canDrop(),
+        }),
+    }))
+
+    const handleClose = useCallback((ingredient:IngredientModel) => {
+        dispatch({type:REMOVE_INGREDIENT, payload: ingredient});
+    },[dispatch]);
+
     return ((
             <section className={clsx('pt-25 pl-4 pr-4', styles.container)}>
                 <ul className={styles.list}>
 
-                    <li key={bun?._id} className={clsx('pl-8', styles.li)}>
+                    <li key={bun?._id} className={clsx('pl-8', styles.li)} ref={bunTopDropRef}>
                         {bun ?
                             <ConstructorElement
+                                extraClass={clsx((topBunCanDrop || bottomBunCanDrop) && '_active')}
                                 type={'top'}
                                 text={bun.name + " (верх)"}
                                 price={bun.price}
@@ -45,7 +89,7 @@ export const BurgerConstructor = () => {
                                 isLocked={true}
                             /> :
                             <ConstructorElement
-                                extraClass={'_empty'}
+                                extraClass={clsx('_empty', (topBunCanDrop || bottomBunCanDrop) && '_active')}
                                 type={'top'}
                                 text={'Выберите булку'}
                                 price={0}
@@ -54,7 +98,9 @@ export const BurgerConstructor = () => {
                             />}
                     </li>
 
-                    <div className={clsx(styles.scroll, 'custom-scroll')}>
+                    <div
+                        className={clsx(styles.scroll, 'custom-scroll', ingredients?.length && canDrop && styles.scroll_active)}
+                        ref={mainDropRef}>
                         {ingredients?.length ?
                             ingredients.map(item => (
                                 <li key={item._id} className={styles.li}>
@@ -63,12 +109,13 @@ export const BurgerConstructor = () => {
                                         text={item.name}
                                         price={item.price}
                                         thumbnail={item.image}
+                                        handleClose={()=>handleClose(item)}
                                     />
                                 </li>
                             )) :
                             <li key={"center"} className={clsx('pl-8', styles.li)}>
                                 <ConstructorElement
-                                    extraClass={'_empty '}
+                                    extraClass={clsx('_empty', canDrop && '_active')}
                                     text={'Выберите начинку'}
                                     price={0}
                                     thumbnail={''}
@@ -76,9 +123,10 @@ export const BurgerConstructor = () => {
                             </li>
                         }
                     </div>
-                    <li key={bun?._id + "_bottom"} className={clsx('pl-8', styles.li)}>
+                    <li key={bun?._id + "_bottom"} className={clsx('pl-8', styles.li)} ref={bunBottomDropRef}>
                         {bun ?
                             <ConstructorElement
+                                extraClass={clsx((topBunCanDrop || bottomBunCanDrop) && '_active')}
                                 type={'bottom'}
                                 text={bun.name + " (низ)"}
                                 price={bun.price}
@@ -86,7 +134,7 @@ export const BurgerConstructor = () => {
                                 isLocked={true}
                             /> :
                             <ConstructorElement
-                                extraClass={'_empty'}
+                                extraClass={clsx('_empty', (topBunCanDrop || bottomBunCanDrop) && '_active')}
                                 type={'bottom'}
                                 text={'Выберите булку'}
                                 price={0}
@@ -102,8 +150,12 @@ export const BurgerConstructor = () => {
                         <CurrencyIcon type="primary"/>
                     </div>
 
-                    <Button htmlType="button" type="primary" size="large" onClick={onMakeOrder}
-                            disabled={!bun || !ingredients?.length}>
+                    <Button htmlType="button"
+                            type="primary"
+                            size="large"
+                            onClick={onMakeOrder}
+                            disabled={!bun || !ingredients?.length}
+                    >
                         Оформить заказ
                     </Button>
                 </div>

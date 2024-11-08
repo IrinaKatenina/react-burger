@@ -2,7 +2,7 @@ import {Dispatch} from "redux";
 import {makeOrderRequest} from "../../utils/order-api.ts";
 import {CLEAR_CONSTRUCTOR} from "../burger-constructor/actions.ts";
 
-export const SET_ORDER = "SET_ORDER";
+export const ORDER_LOADED = "SET_ORDER";
 export const ORDER_LOADING = 'LOADING';
 export const ORDER_ERROR = 'ERROR';
 
@@ -25,12 +25,10 @@ export const makeOrder = (data: { ingredients: Array<string> }) => (dispatch: Di
     // })
 
     makeOrderRequest(data)
-        .then((resData: { data: OrderResponse }) => {
-            console.log("!!!", data);
-
+        .then((resData: OrderResponse) => {
             dispatch({
-                type: SET_ORDER,
-                payload: resData.data.order.number
+                type: ORDER_LOADED,
+                payload: resData.order.number
             })
         })
         .catch(err => {

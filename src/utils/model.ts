@@ -13,11 +13,6 @@ export interface IngredientModel {
     __v: number;
 }
 
-export interface ConstructorModel {
-    bun: IngredientModel | null,
-    ingredients: IngredientModel[]
-}
-
 export interface IngredientsStateModel {
     allIngredients: IngredientModel[],
     loading?: boolean,
@@ -25,7 +20,8 @@ export interface IngredientsStateModel {
 }
 
 export interface ConstructorStateModel {
-    constructorIngredients: ConstructorModel
+    bun: IngredientModel | null,
+    ingredients: IngredientModel[]
 }
 
 export interface CurrentIngredientStateModel {
