@@ -1,7 +1,7 @@
 import styles from './burger-constructor.module.css';
 import clsx from "clsx";
-import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useCallback, useMemo, useState} from "react";
+import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {useMemo, useState} from "react";
 import {Modal} from "../modal/modal.tsx";
 import {OrderDetails} from "../order-details/order-details.tsx";
 import {useDispatch, useSelector} from "react-redux";
@@ -9,7 +9,9 @@ import {clearOrder, makeOrder} from "../../services/order/actions.ts";
 import {getConstructorIngredients} from "../../services/burger-constructor/selectors.ts";
 import {useDrop} from "react-dnd";
 import {IngredientModel} from "../../utils/model.ts";
-import {ADD_INGREDIENT, REMOVE_INGREDIENT, UPDATE_BUN} from "../../services/burger-constructor/actions.ts";
+import {ADD_INGREDIENT, UPDATE_BUN} from "../../services/burger-constructor/actions.ts";
+import {DraggableIngredient} from "./ingredient/draggable-ingredient.tsx";
+import {nanoid} from "@reduxjs/toolkit";
 
 export const BurgerConstructor = () => {
     const dispatch = useDispatch();
@@ -39,7 +41,7 @@ export const BurgerConstructor = () => {
     };
 
     const ingredientHandleDrop = (ingredient: IngredientModel) => {
-        dispatch({type: ADD_INGREDIENT, payload: ingredient});
+        dispatch({type: ADD_INGREDIENT, payload: {...ingredient, key: nanoid()}});
     };
 
     const [{topBunCanDrop}, bunTopDropRef] = useDrop(() => ({
@@ -68,11 +70,7 @@ export const BurgerConstructor = () => {
         collect: (monitor) => ({
             canDrop: monitor.canDrop(),
         }),
-    }))
-
-    const handleClose = useCallback((ingredient:IngredientModel) => {
-        dispatch({type:REMOVE_INGREDIENT, payload: ingredient});
-    },[dispatch]);
+    }));
 
     return ((
             <section className={clsx('pt-25 pl-4 pr-4', styles.container)}>
@@ -102,16 +100,8 @@ export const BurgerConstructor = () => {
                         className={clsx(styles.scroll, 'custom-scroll', ingredients?.length && canDrop && styles.scroll_active)}
                         ref={mainDropRef}>
                         {ingredients?.length ?
-                            ingredients.map(item => (
-                                <li key={item._id} className={styles.li}>
-                                    <DragIcon className={styles.icon_drag} type="primary"/>
-                                    <ConstructorElement
-                                        text={item.name}
-                                        price={item.price}
-                                        thumbnail={item.image}
-                                        handleClose={()=>handleClose(item)}
-                                    />
-                                </li>
+                            ingredients.map((item, index) => (
+                                <DraggableIngredient key={item.key} item={item} index={index}/>
                             )) :
                             <li key={"center"} className={clsx('pl-8', styles.li)}>
                                 <ConstructorElement

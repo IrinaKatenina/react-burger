@@ -11,6 +11,7 @@ export interface IngredientModel {
     image_mobile: string;
     image_large: string;
     __v: number;
+    key?: string
 }
 
 export interface IngredientsStateModel {
