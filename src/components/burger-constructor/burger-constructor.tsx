@@ -25,7 +25,7 @@ export const BurgerConstructor = () => {
     const [isPopupVisible, setPopupVisible] = useState(false);
 
     const onMakeOrder = () => {
-        const items = [bun?._id, ingredients.map(item => item?._id), bun?._id];
+        const items = [bun?._id, ...ingredients.map(item => item?._id), bun?._id];
         dispatch(makeOrder({ingredients: items}));
 
         setPopupVisible(true);
@@ -44,31 +44,34 @@ export const BurgerConstructor = () => {
         dispatch({type: ADD_INGREDIENT, payload: {...ingredient, key: nanoid()}});
     };
 
-    const [{topBunCanDrop}, bunTopDropRef] = useDrop(() => ({
+    const [{topBunCanDrop, topBunIsOver}, bunTopDropRef] = useDrop(() => ({
         accept: "bun",
         drop: (ingredient: IngredientModel) => {
             bunHandleDrop(ingredient);
         },
         collect: (monitor) => ({
             topBunCanDrop: monitor.canDrop(),
+            topBunIsOver: monitor.isOver(),
         }),
     }));
 
-    const [{bottomBunCanDrop}, bunBottomDropRef] = useDrop(() => ({
+    const [{bottomBunCanDrop, bottomBunIsOver}, bunBottomDropRef] = useDrop(() => ({
         accept: "bun",
         drop: (ingredient: IngredientModel) => {
             bunHandleDrop(ingredient);
         },
         collect: (monitor) => ({
             bottomBunCanDrop: monitor.canDrop(),
+            bottomBunIsOver: monitor.isOver(),
         }),
     }));
 
-    const [{canDrop}, mainDropRef] = useDrop(() => ({
+    const [{canDrop, mainIsOver}, mainDropRef] = useDrop(() => ({
         accept: "ingredient",
         drop: (ingredient: IngredientModel) => (ingredientHandleDrop(ingredient)),
         collect: (monitor) => ({
             canDrop: monitor.canDrop(),
+            mainIsOver: monitor.isOver(),
         }),
     }));
 
@@ -79,7 +82,7 @@ export const BurgerConstructor = () => {
                     <li key={bun?._id} className={clsx('pl-8', styles.li)} ref={bunTopDropRef}>
                         {bun ?
                             <ConstructorElement
-                                extraClass={clsx((topBunCanDrop || bottomBunCanDrop) && '_active')}
+                                extraClass={clsx((topBunCanDrop || bottomBunCanDrop) && '_active', topBunIsOver && '_over')}
                                 type={'top'}
                                 text={bun.name + " (верх)"}
                                 price={bun.price}
@@ -87,7 +90,7 @@ export const BurgerConstructor = () => {
                                 isLocked={true}
                             /> :
                             <ConstructorElement
-                                extraClass={clsx('_empty', (topBunCanDrop || bottomBunCanDrop) && '_active')}
+                                extraClass={clsx('_empty', (topBunCanDrop || bottomBunCanDrop) && '_active', topBunIsOver && '_over')}
                                 type={'top'}
                                 text={'Выберите булку'}
                                 price={0}
@@ -97,7 +100,7 @@ export const BurgerConstructor = () => {
                     </li>
 
                     <div
-                        className={clsx(styles.scroll, 'custom-scroll', ingredients?.length && canDrop && styles.scroll_active)}
+                        className={clsx(styles.scroll, 'custom-scroll', ingredients?.length && canDrop && styles.scroll_active, ingredients?.length && mainIsOver && styles.scroll_over)}
                         ref={mainDropRef}>
                         {ingredients?.length ?
                             ingredients.map((item, index) => (
@@ -105,7 +108,7 @@ export const BurgerConstructor = () => {
                             )) :
                             <li key={"center"} className={clsx('pl-8', styles.li)}>
                                 <ConstructorElement
-                                    extraClass={clsx('_empty', canDrop && '_active')}
+                                    extraClass={clsx('_empty', canDrop && '_active', mainIsOver && '_over')}
                                     text={'Выберите начинку'}
                                     price={0}
                                     thumbnail={''}
@@ -116,7 +119,7 @@ export const BurgerConstructor = () => {
                     <li key={bun?._id + "_bottom"} className={clsx('pl-8', styles.li)} ref={bunBottomDropRef}>
                         {bun ?
                             <ConstructorElement
-                                extraClass={clsx((topBunCanDrop || bottomBunCanDrop) && '_active')}
+                                extraClass={clsx((topBunCanDrop || bottomBunCanDrop) && '_active', bottomBunIsOver && '_over')}
                                 type={'bottom'}
                                 text={bun.name + " (низ)"}
                                 price={bun.price}
@@ -124,7 +127,7 @@ export const BurgerConstructor = () => {
                                 isLocked={true}
                             /> :
                             <ConstructorElement
-                                extraClass={clsx('_empty', (topBunCanDrop || bottomBunCanDrop) && '_active')}
+                                extraClass={clsx('_empty', (topBunCanDrop || bottomBunCanDrop) && '_active', bottomBunIsOver && '_over')}
                                 type={'bottom'}
                                 text={'Выберите булку'}
                                 price={0}

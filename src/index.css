@@ -33,6 +33,10 @@ body {
     border: 2px dashed #4C4CFF;
 }
 
+.constructor-element._over {
+    background-color: rgba(76, 76, 255, 0.58);
+}
+
 .constructor-element._empty .constructor-element__text {
     justify-content: center;
 }
