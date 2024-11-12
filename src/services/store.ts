@@ -11,7 +11,7 @@ export const initialState: StateModel = {
     ingredients: {
         allIngredients: []
     },
-    currentIngredient: {currentIngredient: null},
+    currentIngredient: {model: null},
     burgerConstructor: {
         bun: null,
         ingredients: []

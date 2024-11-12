@@ -26,7 +26,7 @@ export interface ConstructorStateModel {
 }
 
 export interface CurrentIngredientStateModel {
-    currentIngredient: IngredientModel | null
+    model: IngredientModel | null
 }
 
 export interface OrderStateModel {

@@ -2,7 +2,7 @@ import {ActionModel, CurrentIngredientStateModel, IngredientModel} from "../../u
 import {SET_CURRENT_INGREDIENT} from "../ingredients/actions.ts";
 
 const initialState: CurrentIngredientStateModel = {
-    currentIngredient: null,
+    model: null,
 }
 
 export const currentIngredientReducer = (state: CurrentIngredientStateModel = initialState, action: ActionModel) => {
@@ -10,7 +10,7 @@ export const currentIngredientReducer = (state: CurrentIngredientStateModel = in
         case SET_CURRENT_INGREDIENT:
             return {
                 ...state,
-                currentIngredient: action.payload as IngredientModel | null,
+                model: action.payload as IngredientModel | null,
             };
         default:
             return state;

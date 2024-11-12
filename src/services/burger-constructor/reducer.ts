@@ -27,7 +27,7 @@ export const constructorReducer = (state: ConstructorStateModel = initialState, 
         case REMOVE_INGREDIENT:
             return {
                 ...state,
-                ingredients: [...state.ingredients.filter(item => item !== action.payload)]
+                ingredients: state.ingredients.filter(item => item !== action.payload)
             }
         case MOVE_INGREDIENT: {
             const ingredients = [...state.ingredients];
