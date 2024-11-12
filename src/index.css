@@ -17,3 +17,32 @@ body {
 * {
     box-sizing: border-box;
 }
+
+
+.constructor-element {
+    border: 2px dashed transparent;
+}
+
+.constructor-element._empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.constructor-element._active {
+    border: 2px dashed #4C4CFF;
+}
+
+.constructor-element._over {
+    background-color: rgba(76, 76, 255, 0.58);
+}
+
+.constructor-element._empty .constructor-element__text {
+    justify-content: center;
+}
+
+.constructor-element._empty .constructor-element__image,
+.constructor-element._empty .constructor-element__price,
+.constructor-element._empty .constructor-element__action {
+    display: none;
+}

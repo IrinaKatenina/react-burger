@@ -2,6 +2,8 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    max-width: 600px;
+    flex: 1 0 600px;
 }
 
 .list {
@@ -42,4 +44,15 @@
     flex-direction: column;
     gap: 16px;
     overflow-y: scroll;
+    min-height: 80px;
+    border: 2px dashed transparent;
+    border-radius: 12px;
+}
+
+.scroll_active {
+    border: 2px dashed #4C4CFF;
+}
+
+.scroll_over {
+    background-color: rgba(76, 76, 255, 0.58);
 }

@@ -1,16 +1,14 @@
-import {IngredientModel} from "../../../utils/model.ts";
 import styles from "./ingredient-details.module.css";
 import clsx from "clsx";
+import {useSelector} from "react-redux";
+import {getCurrentIngredient} from "../../../services/current-ingredient/selectors.ts";
 
-interface Props {
-    model: IngredientModel
-}
+export function IngredientDetails() {
 
-export function IngredientDetails(props: Props) {
-    const {model} = props;
+    const model = useSelector(getCurrentIngredient);
 
     return (
-        <div className={styles.container}>
+        model && <div className={styles.container}>
             <img className={clsx('pl-4 pr-4 mb-4', styles.image)} src={model.image} alt={model.name}/>
             <p className={'text text_type_main-medium mb-8'}>{model.name}</p>
             <div className={styles.macronutrients}>
