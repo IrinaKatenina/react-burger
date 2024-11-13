@@ -10,6 +10,8 @@ import {ProfilePage} from "../../pages/profile/profile.tsx";
 import {NotFound404} from "../../pages/not-found/not-found.tsx";
 import {Modal} from "../modal/modal.tsx";
 import {ResetPasswordPage} from "../../pages/reset-password/reset-password.tsx";
+import {OrdersPage} from "../../pages/profile/orders/orders.tsx";
+import {UserProfilePage} from "../../pages/profile/user/user.tsx";
 
 
 function App() {
@@ -32,7 +34,10 @@ function App() {
                     <Route path="/register" element={<RegisterPage/>}/>
                     <Route path="/forgot-password" element={<ForgotPasswordPage/>}/>
                     <Route path="/reset-password" element={<ResetPasswordPage/>}/>
-                    <Route path="/profile" element={<ProfilePage/>}/>
+                    <Route path="/profile" element={<ProfilePage/>}>
+                        <Route path="" element={<UserProfilePage/>}/>
+                        <Route path="orders" element={<OrdersPage/>}/>
+                    </Route>
                     <Route path="/ingredients/:ingredientId" element={<IngredientDetails/>}/>
                     <Route path="*" element={<NotFound404/>}/>
                 </Routes>
