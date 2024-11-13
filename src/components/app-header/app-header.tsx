@@ -11,7 +11,7 @@ export const AppHeader = () => (
                 <HeaderButton><ListIcon type="primary"/>Лента заказов</HeaderButton>
             </nav>
 
-            <Logo/>
+            <Logo className={styles.logo}/>
 
             <HeaderButton><ProfileIcon type="primary"/>Личный кабинет</HeaderButton>
         </div>

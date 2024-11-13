@@ -4,17 +4,13 @@ import clsx from "clsx";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import {IngredientList} from "./ingredient-list/ingredient-list";
 import {IngredientModel} from "../../utils/model";
-import {Modal} from "../modal/modal.tsx";
-import {IngredientDetails} from "./ingredient-details/ingredient-details.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {setCurrentIngredient} from "../../services/current-ingredient/actions.ts";
-import {getCurrentIngredient} from "../../services/current-ingredient/selectors.ts";
 import {getIngredientsByType} from "../../services/ingredients/selectors.ts";
 
 export const BurgerIngredients = () => {
     const dispatch = useDispatch();
     const [currentTab, setCurrentTab] = React.useState('bun');
-    const currentIngredient = useSelector(getCurrentIngredient);
 
     const {buns, sauces, mains} = useSelector(getIngredientsByType);
 
@@ -25,10 +21,6 @@ export const BurgerIngredients = () => {
 
     const onIngredientClick = (ingredient: IngredientModel) => {
         dispatch(setCurrentIngredient(ingredient));
-    };
-
-    const onCloseModal = () => {
-        dispatch(setCurrentIngredient(null));
     };
 
     const onTabClick = ((tab: string) => {
@@ -83,12 +75,6 @@ export const BurgerIngredients = () => {
                 <IngredientList title={'Соусы'} items={sauces} onIngredientClick={onIngredientClick} ref={saucesRef}/>
                 <IngredientList title={'Начинки'} items={mains} onIngredientClick={onIngredientClick} ref={mainsRef}/>
             </div>
-
-            {currentIngredient && (
-                <Modal header={'Детали ингредиента'} onClose={onCloseModal}>
-                    <IngredientDetails/>
-                </Modal>
-            )}
         </section>
     );
 };
