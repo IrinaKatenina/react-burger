@@ -1,15 +1,14 @@
 import styles from "./ingredient-details.module.css";
 import clsx from "clsx";
 import {useSelector} from "react-redux";
-import {getCurrentIngredient} from "../../../services/current-ingredient/selectors.ts";
+import {getIngredientById} from "../../services/current-ingredient/selectors.ts";
 import {useParams} from "react-router-dom";
 
 export function IngredientDetails() {
 
     const {ingredientId} = useParams();
-    // const modelByPath = useSelector(getIngredientById(ingredientId));
-    const modelFromStore = useSelector(getCurrentIngredient);
-    const model = /*modelByPath || */ modelFromStore;
+    const model = useSelector(getIngredientById(ingredientId));
+
     return (
         model && <div className={styles.container}>
             <img className={clsx('pl-4 pr-4 mb-4', styles.image)} src={model.image} alt={model.name}/>

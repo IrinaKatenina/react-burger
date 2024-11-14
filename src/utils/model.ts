@@ -25,10 +25,6 @@ export interface ConstructorStateModel {
     ingredients: IngredientModel[]
 }
 
-export interface CurrentIngredientStateModel {
-    model: IngredientModel | null
-}
-
 export interface OrderStateModel {
     orderNumber?: string
     loading?: boolean,
@@ -38,7 +34,6 @@ export interface OrderStateModel {
 export interface StateModel {
     ingredients: IngredientsStateModel,
     burgerConstructor: ConstructorStateModel,
-    currentIngredient: CurrentIngredientStateModel,
     order?: OrderStateModel,
 }
 
