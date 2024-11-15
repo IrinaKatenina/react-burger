@@ -23,3 +23,7 @@
     left: calc(50% - 145px);
     top: 3px;
 }
+
+.link {
+    text-decoration: none;
+}

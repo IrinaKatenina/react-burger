@@ -1,23 +1,21 @@
-import {NavLink, Outlet, useLocation} from "react-router-dom";
+import {NavLink, NavLinkRenderProps, Outlet, useLocation} from "react-router-dom";
 import {Button} from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from "./profile.module.css";
 import clsx from "clsx";
 
 export function ProfilePage() {
-
-
     const {pathname} = useLocation();
     const isOrdersPage = pathname?.endsWith("orders");
     const userText = "В этом разделе вы можете изменить свои персональные данные";
     const ordersText = "В этом разделе вы можете просмотреть свою историю заказов";
 
 
-    const navLinkClassName = ({isActive}) => clsx(
-            "text text_type_main-medium",
-            styles.nav_link,
-            isActive ? styles.nav_link_active : "text_color_inactive",
-        );
+    const navLinkClassName = ({isActive}: NavLinkRenderProps) => clsx(
+        "text text_type_main-medium",
+        styles.nav_link,
+        isActive ? styles.nav_link_active : "text_color_inactive",
+    );
 
     return (
         <div className={styles.container}>
