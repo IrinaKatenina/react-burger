@@ -1,9 +1,14 @@
 import styles from './login.module.css';
 import {Button, EmailInput, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import clsx from "clsx";
+import {useNavigate} from "react-router-dom";
+import {login} from "../../services/user/actions.ts";
+import {useDispatch} from "react-redux";
 
 export function LoginPage() {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [emailValue, setEmailValue] = useState('')
     const [passwordValue, setPasswordValue] = useState('')
 
@@ -14,6 +19,19 @@ export function LoginPage() {
     const onPasswordChange = e => {
         setPasswordValue(e.target.value)
     }
+
+    const onRegisterClick = useCallback(() => {
+        navigate('/register');
+    }, []);
+
+    const onForgotPasswordClick = useCallback(() => {
+        navigate('/forgot-password');
+    }, []);
+
+    const signIn = useCallback(() => {
+        dispatch(login({"email": emailValue, "password": passwordValue}));
+    }, [emailValue, passwordValue]);
+
 
     return (
         <div className={styles.container}>
@@ -33,17 +51,18 @@ export function LoginPage() {
                 name={'password'}
             />
 
-            <Button extraClass={'mb-7'} htmlType="button" type="primary" size="medium">
+            <Button extraClass={'mb-7'} htmlType="button" type="primary" size="medium" onClick={signIn}>
                 Войти
             </Button>
 
             <div className={clsx(styles.footer, 'mt-7')}>
                 <p className={clsx(styles.footer_text, 'text_color_inactive')}>Вы - новый пользователь?
                     <Button extraClass={'pt-1 pb-1 pl-1 pr-1 ml-3'} htmlType="button" type="secondary"
-                            size="medium">Зарегистрироваться</Button>
+                            size="medium" onClick={onRegisterClick}>Зарегистрироваться</Button>
                 </p>
                 <p className={clsx(styles.footer_text, 'text_color_inactive')}>Забыли пароль?
-                    <Button extraClass={'pt-1 pb-1 pl-1 pr-1 ml-3'} htmlType="button" type="secondary" size="medium">
+                    <Button extraClass={'pt-1 pb-1 pl-1 pr-1 ml-3'} htmlType="button" type="secondary" size="medium"
+                            onClick={onForgotPasswordClick}>
                         Восстановить пароль
                     </Button>
                 </p>

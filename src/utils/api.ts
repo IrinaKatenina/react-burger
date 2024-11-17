@@ -1,10 +1,12 @@
+import {TUser} from "./model.ts";
+
 const BURGER_API_URL = "https://norma.nomoreparties.space/api";
 
 const checkResponse = (res: Response) => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-export const passwordReset = (data) => {
+const passwordReset = (data: { email: string }) => {
     return fetch(`${BURGER_API_URL}/password-reset`, {
         method: 'POST',
         headers: {
@@ -14,7 +16,7 @@ export const passwordReset = (data) => {
     }).then(checkResponse)
 };
 
-export const passwordResetReset = (data) => {
+const passwordResetReset = (data: { password: string, token: string }) => {
     return fetch(`${BURGER_API_URL}/password-reset/reset`, {
         method: 'POST',
         headers: {
@@ -25,7 +27,7 @@ export const passwordResetReset = (data) => {
 };
 
 
-export const register = (data) => {
+const register = (data: { email: string, password: string, name: string }) => {
     return fetch(`${BURGER_API_URL}/auth/register`, {
         method: 'POST',
         headers: {
@@ -36,40 +38,60 @@ export const register = (data) => {
 };
 
 
-export const login = (data) => {
+const login = (data: { email: string, password: string }) => {
     return fetch(`${BURGER_API_URL}/auth/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(data)
-    }).then(checkResponse)
+    })
+        .then(checkResponse)
+        .then((data: { success: boolean, accessToken: string, refreshToken: string }) => {
+            if (!data.success) {
+                return Promise.reject(data);
+            }
+            localStorage.setItem("refreshToken", data.refreshToken);
+            localStorage.setItem("accessToken", data.accessToken);
+            return data;
+        });
 };
 
 
-export const logout = (data) => {
+const logout = () => {
     return fetch(`${BURGER_API_URL}/auth/logout`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
         },
-        body: JSON.stringify(data)
-    }).then(checkResponse)
+    })
+        .then(checkResponse)
+        .then(() => {
+            localStorage.removeItem("refreshToken");
+            localStorage.removeItem("accessToken");
+        })
 };
 
 
-export const getUser = (data) => {
-    return fetch(`${BURGER_API_URL}/auth/user`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify(data)
-    }).then(checkResponse)
+const getUser = async (): Promise<TUser> => {
+    try {
+        const res = await fetch(`${BURGER_API_URL}/auth/user`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+        });
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return checkResponse(res);
+    } catch (err) {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        throw err;
+    }
 };
 
 
-export const patchUser = (data) => {
+const patchUser = (data) => {
     return fetch(`${BURGER_API_URL}/auth/user`, {
         method: 'PATCH',
         headers: {
@@ -79,7 +101,7 @@ export const patchUser = (data) => {
     }).then(checkResponse)
 };
 
-export const refreshToken = () => {
+const refreshToken = () => {
     return fetch(`${BURGER_API_URL}/auth/token`, {
         method: "POST",
         headers: {
@@ -92,7 +114,7 @@ export const refreshToken = () => {
         .then(checkResponse)
         // !! Важно для обновления токена в мидлваре, чтобы запись
         // была тут, а не в fetchWithRefresh
-        .then((refreshData) => {
+        .then((refreshData: { success: boolean, accessToken: string, refreshToken: string }) => {
             if (!refreshData.success) {
                 return Promise.reject(refreshData);
             }
@@ -102,14 +124,19 @@ export const refreshToken = () => {
         });
 };
 
-export const fetchWithRefresh = async (url, options) => {
+export const fetchWithRefresh = async (url: string, options: RequestInit) => {
     try {
+        if (options.headers) {
+            options.headers["authorization"] = localStorage.getItem("accessToken");
+        }
         const res = await fetch(url, options);
         return await checkResponse(res);
     } catch (err) {
         if (err.message === "jwt expired") {
             const refreshData = await refreshToken(); //обновляем токен
-            options.headers.authorization = refreshData.accessToken;
+            if (options.headers) {
+                options.headers["authorization"] = refreshData.accessToken;
+            }
             const res = await fetch(url, options); //повторяем запрос
             return await checkResponse(res);
         } else {
@@ -117,3 +144,13 @@ export const fetchWithRefresh = async (url, options) => {
         }
     }
 };
+
+export const api = {
+    passwordReset,
+    passwordResetReset,
+    login,
+    logout,
+    register,
+    getUser,
+    patchUser
+}

@@ -1,15 +1,39 @@
 import styles from './reset-password.module.css';
 import {Button, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import clsx from "clsx";
+import {useNavigate} from "react-router-dom";
+import {api} from "../../utils/api.ts";
 
 export function ResetPasswordPage() {
-    const [codeValue, setCodeValue] = useState('')
-    const [passwordValue, setPasswordValue] = useState('')
+    const [codeValue, setCodeValue] = useState('');
+    const [passwordValue, setPasswordValue] = useState('');
+    const navigate = useNavigate();
 
-    const onPasswordChange = e => {
+    const onPasswordChange = useCallback(e => {
         setPasswordValue(e.target.value)
-    }
+    }, [setPasswordValue]);
+
+    const onCodeChange = useCallback(e => {
+        setCodeValue(e.target.value)
+    }, [setCodeValue]);
+
+    const onSave = useCallback(() => {
+        api.passwordResetReset({
+            "password": passwordValue, "token": codeValue
+        })
+            .then((res: { success: boolean, message: string }) => {
+                if (res.success) {
+                    navigate("/login");
+                } else {
+                    throw new Error(res.message);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }, [passwordValue, codeValue]);
+
 
     return (
         <div className={styles.container}>
@@ -25,7 +49,7 @@ export function ResetPasswordPage() {
             <Input
                 type={'text'}
                 placeholder={'Введите код из письма'}
-                onChange={e => setCodeValue(e.target.value)}
+                onChange={onCodeChange}
                 value={codeValue}
                 name={'name'}
                 error={false}
@@ -33,7 +57,7 @@ export function ResetPasswordPage() {
                 size={'default'}
             />
 
-            <Button extraClass={'mb-7'} htmlType="button" type="primary" size="medium">
+            <Button extraClass={'mb-7'} htmlType="button" type="primary" size="medium" onClick={onSave}>
                 Сохранить
             </Button>
 

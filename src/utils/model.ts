@@ -41,3 +41,8 @@ export interface ActionModel {
     type: string,
     payload?: any
 }
+
+export type TUser = {
+    email: string,
+    name: string,
+}

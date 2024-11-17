@@ -19,11 +19,6 @@ export const clearOrder = () => ({type: CLEAR_CONSTRUCTOR});
 export const makeOrder = (data: { ingredients: Array<string> }) => (dispatch: Dispatch) => {
     dispatch({type: ORDER_LOADING});
 
-    // dispatch({
-    //     type: SET_ORDER,
-    //     payload: FAKE_DATA.order.number
-    // })
-
     makeOrderRequest(data)
         .then((resData: OrderResponse) => {
             dispatch({
@@ -36,11 +31,3 @@ export const makeOrder = (data: { ingredients: Array<string> }) => (dispatch: Di
             console.error('Could not load data', err);
         });
 }
-
-// const FAKE_DATA = {
-//     "name": "Краторный метеоритный бургер",
-//     "order": {
-//         "number": 6257
-//     },
-//     "success": true
-// };
