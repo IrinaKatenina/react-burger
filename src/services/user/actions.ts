@@ -1,18 +1,23 @@
 import {api} from '../../utils/api.ts';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {setIsAuthChecked, setUser} from "./slice.ts";
+import {TUser} from "../../utils/model.ts";
 
 export const login = createAsyncThunk(
     "user/login",
     async (form: { email: string, password: string }) => {
-        return api.login(form)
+        const res = await api.login(form);
+        return res.user;
     }
 );
 
 export const logout = createAsyncThunk(
     "user/logout",
-    async () => {
+    async (_, {dispatch}) => {
         return api.logout()
+            .then(() => {
+                dispatch(setUser(null));
+            });
     }
 );
 
@@ -20,14 +25,11 @@ export const checkUserAuth = createAsyncThunk(
     "user/checkUserAuth",
     async (_, {dispatch}) => {
         if (localStorage.getItem('accessToken')) {
-            api.getUser()
-                .then(res => {
-                    console.log("!!!!!", res);
+            void api.getUser()
+                .then((res: { success: boolean, user: TUser }) => {
                     dispatch(setUser(res.user));
                 })
                 .finally(() => dispatch(setIsAuthChecked(true)))
-                .catch(err => {
-                });
         } else {
             dispatch(setIsAuthChecked(true))
         }

@@ -2,11 +2,14 @@ import styles from './user.module.css';
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useState} from "react";
 import clsx from "clsx";
+import {useSelector} from "react-redux";
+import {getUser} from "../../../services/user/slice.ts";
 
 
 export const UserProfilePage = () => {
-    const [nameValue, setNameValue] = useState('')
-    const [emailValue, setEmailValue] = useState('')
+    const user = useSelector(getUser);
+    const [nameValue, setNameValue] = useState(user?.name ?? '')
+    const [emailValue, setEmailValue] = useState(user?.email ?? '')
     const [passwordValue, setPasswordValue] = useState('');
 
     const onEmailChange = e => {

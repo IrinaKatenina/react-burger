@@ -47,7 +47,7 @@ const login = (data: { email: string, password: string }) => {
         body: JSON.stringify(data)
     })
         .then(checkResponse)
-        .then((data: { success: boolean, accessToken: string, refreshToken: string }) => {
+        .then((data: { success: boolean, accessToken: string, refreshToken: string, user: TUser}) => {
             if (!data.success) {
                 return Promise.reject(data);
             }
@@ -59,30 +59,35 @@ const login = (data: { email: string, password: string }) => {
 
 
 const logout = () => {
+    const data = {token: localStorage.getItem("refreshToken")};
     return fetch(`${BURGER_API_URL}/auth/logout`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json;charset=utf-8'
+            'Content-Type': 'application/json;charset=utf-8',
+            'Authorization': localStorage.getItem("accessToken") ?? ""
         },
+        body: JSON.stringify(data)
     })
         .then(checkResponse)
-        .then(() => {
-            localStorage.removeItem("refreshToken");
-            localStorage.removeItem("accessToken");
+        .then((res) => {
+            if (res.success) {
+                localStorage.removeItem("refreshToken");
+                localStorage.removeItem("accessToken");
+            } else {
+                throw res;
+            }
         })
 };
 
 
-const getUser = async (): Promise<TUser> => {
+const getUser = async (): Promise< { success: boolean, user: TUser }> => {
     try {
-        const res = await fetch(`${BURGER_API_URL}/auth/user`, {
+        return await fetchWithRefresh(`${BURGER_API_URL}/auth/user`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
         });
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        return checkResponse(res);
     } catch (err) {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
