@@ -41,7 +41,6 @@ export const UserProfilePage = () => {
         api.patchUser(formState)
             .then((res: { success: boolean, user: TUser }) => {
                 if (res.success) {
-                    console.log("SUCCESS", res);
                     dispatch(setUser(res.user));
                 } else {
                     throw new Error();
