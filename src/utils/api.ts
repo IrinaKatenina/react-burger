@@ -100,7 +100,8 @@ const patchUser = (data) => {
     return fetch(`${BURGER_API_URL}/auth/user`, {
         method: 'PATCH',
         headers: {
-            'Content-Type': 'application/json;charset=utf-8'
+            'Content-Type': 'application/json;charset=utf-8',
+            'Authorization': localStorage.getItem("accessToken") ?? ""
         },
         body: JSON.stringify(data)
     }).then(checkResponse)

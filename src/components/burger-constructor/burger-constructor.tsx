@@ -12,9 +12,13 @@ import {IngredientModel} from "../../utils/model.ts";
 import {ADD_INGREDIENT, UPDATE_BUN} from "../../services/burger-constructor/actions.ts";
 import {DraggableIngredient} from "./ingredient/draggable-ingredient.tsx";
 import {nanoid} from "@reduxjs/toolkit";
+import {getUser} from "../../services/user/slice.ts";
+import {useNavigate} from "react-router-dom";
 
 export const BurgerConstructor = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const user = useSelector(getUser);
     const {bun, ingredients} = useSelector(getConstructorIngredients);
 
     const totalPrice = useMemo(() => {
@@ -25,10 +29,14 @@ export const BurgerConstructor = () => {
     const [isPopupVisible, setPopupVisible] = useState(false);
 
     const onMakeOrder = () => {
-        const items = [bun?._id, ...ingredients.map(item => item?._id), bun?._id];
-        dispatch(makeOrder({ingredients: items}));
+        if (!user) {
+            navigate("/login");
+        } else {
+            const items = [bun?._id, ...ingredients.map(item => item?._id), bun?._id];
+            dispatch(makeOrder({ingredients: items}));
 
-        setPopupVisible(true);
+            setPopupVisible(true);
+        }
     };
 
     const onCloseModal = () => {

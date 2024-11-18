@@ -17,7 +17,7 @@ export function ForgotPasswordPage() {
         api.passwordReset({email: emailValue})
             .then((res: { success: boolean, message: string }) => {
                 if (res.success) {
-                    navigate('/reset-password');
+                    navigate('/reset-password', {state: {fromForgot: 'forgot-password'}});
                 } else {
                     throw new Error(res.message);
                 }

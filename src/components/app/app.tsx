@@ -38,7 +38,7 @@ function App() {
             <AppHeader/>
             <main className={styles.main}>
                 <Routes location={background || location}>
-                    <Route path="/" element={<OnlyAuth component={<HomePage/>}/>}/>
+                    <Route path="/" element={<HomePage/>}/>
                     <Route path="/login" element={<OnlyUnAuth component={<LoginPage/>}/>}/>
                     <Route path="/register" element={<OnlyUnAuth component={<RegisterPage/>}/>}/>
                     <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPasswordPage/>}/>}/>

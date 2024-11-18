@@ -1,32 +1,68 @@
 import styles from './user.module.css';
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import clsx from "clsx";
-import {useSelector} from "react-redux";
-import {getUser} from "../../../services/user/slice.ts";
+import {useDispatch, useSelector} from "react-redux";
+import {getUser, setUser} from "../../../services/user/slice.ts";
+import {api} from "../../../utils/api.ts";
+import {TUser} from "../../../utils/model.ts";
 
 
 export const UserProfilePage = () => {
     const user = useSelector(getUser);
-    const [nameValue, setNameValue] = useState(user?.name ?? '')
-    const [emailValue, setEmailValue] = useState(user?.email ?? '')
-    const [passwordValue, setPasswordValue] = useState('');
+    const dispatch = useDispatch();
 
-    const onEmailChange = e => {
-        setEmailValue(e.target.value)
-    }
+    const initialFormState = {
+        name: user?.name ?? '',
+        email: user?.email ?? '',
+        password: '',
+    };
 
-    const onPasswordChange = e => {
-        setPasswordValue(e.target.value)
-    }
+    const [formState, setFormState] = useState(initialFormState);
+    const [isChanged, setIsChanged] = useState(false);
+
+    const handleChange = (e) => {
+        const {name, value} = e.target;
+        setFormState(prevState => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
+
+    useEffect(() => {
+        const isFormChanged = Object.keys(initialFormState).some(
+            key => formState[key] !== initialFormState[key]
+        );
+        setIsChanged(isFormChanged);
+    }, [formState]);
+
+
+    const onSave = useCallback(() => {
+        api.patchUser(formState)
+            .then((res: { success: boolean, user: TUser }) => {
+                if (res.success) {
+                    console.log("SUCCESS", res);
+                    dispatch(setUser(res.user));
+                } else {
+                    throw new Error();
+                }
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }, [formState]);
+
+    const onReset = useCallback(() => {
+        setFormState(initialFormState);
+    }, []);
 
     return (
         <div className={clsx('mt-10', styles.container)}>
             <Input
                 type={'text'}
                 placeholder={'Имя'}
-                onChange={e => setNameValue(e.target.value)}
-                value={nameValue}
+                onChange={handleChange}
+                value={formState.name}
                 name={'name'}
                 error={false}
                 errorText={'Ошибка'}
@@ -35,30 +71,32 @@ export const UserProfilePage = () => {
             />
 
             <EmailInput
-                onChange={onEmailChange}
-                value={emailValue}
+                onChange={handleChange}
+                value={formState.email}
                 name={'email'}
                 placeholder="Логин"
                 isIcon={true}
             />
 
             <PasswordInput
-                onChange={onPasswordChange}
-                value={passwordValue}
+                onChange={handleChange}
+                value={formState.password}
                 name={'password'}
                 icon="EditIcon"
                 placeholder={'Пароль'}
             />
 
-            <div className={clsx(styles.footer)}>
-                <Button htmlType="button" type="secondary" size="medium">
-                    Отмена
-                </Button>
+            {isChanged &&
+                <div className={clsx(styles.footer)}>
+                    <Button htmlType="button" type="secondary" size="medium" onClick={onReset}>
+                        Отмена
+                    </Button>
 
-                <Button htmlType="button" type="primary" size="medium">
-                    Сохранить
-                </Button>
-            </div>
+                    <Button htmlType="button" type="primary" size="medium" onClick={onSave}>
+                        Сохранить
+                    </Button>
+                </div>
+            }
         </div>
     );
 }
