@@ -13,10 +13,10 @@
     line-height: 24px;
 
     &:hover {
-        color: var(--colors-interface-accent);
+        color: var(--text-primary-color);
 
         & > svg {
-            fill: var(--colors-interface-accent);
+            fill: var(--text-primary-color);
         }
     }
 

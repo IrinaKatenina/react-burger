@@ -3,15 +3,27 @@
     justify-content: center;
     align-items: center;
     background-color: var(--background);
+    min-width: 1030px;
 }
 
 .header_inner {
     display: flex;
     justify-content: space-between;
     width: 1280px;
+    position: relative;
 }
 
 .header_group {
     display: flex;
     gap: 8px;
+}
+
+.logo {
+    position: absolute;
+    left: calc(50% - 145px);
+    top: 3px;
+}
+
+.link {
+    text-decoration: none;
 }

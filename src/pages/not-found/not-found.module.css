@@ -1,0 +1,28 @@
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    height: 100%;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    color: #EBCF47;
+    font-weight: bold;
+    font-size: 40px;
+    line-height: 48px;
+    margin: 10px 0 20px;
+}
+
+.link {
+    color: #EBCF47;
+}

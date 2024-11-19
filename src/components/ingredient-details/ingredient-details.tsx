@@ -1,11 +1,13 @@
 import styles from "./ingredient-details.module.css";
 import clsx from "clsx";
 import {useSelector} from "react-redux";
-import {getCurrentIngredient} from "../../../services/current-ingredient/selectors.ts";
+import {getIngredientById} from "../../services/current-ingredient/selectors.ts";
+import {useParams} from "react-router-dom";
 
 export function IngredientDetails() {
 
-    const model = useSelector(getCurrentIngredient);
+    const {ingredientId} = useParams();
+    const model = useSelector(getIngredientById(ingredientId));
 
     return (
         model && <div className={styles.container}>

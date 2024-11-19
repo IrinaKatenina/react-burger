@@ -10,7 +10,6 @@ interface Props {
     onClick?: () => void,
     title: string,
     items: IngredientModel[],
-    onIngredientClick: (ingredient: IngredientModel) => void
 }
 
 export const IngredientList = forwardRef((props: Props, ref: ForwardedRef<HTMLParagraphElement>) => {
@@ -31,7 +30,7 @@ export const IngredientList = forwardRef((props: Props, ref: ForwardedRef<HTMLPa
                     <li key={ingredient._id}>
                         <Ingredient ingredient={ingredient}
                                     count={countMap[ingredient._id]}
-                                    onClick={props.onIngredientClick}></Ingredient>
+                        ></Ingredient>
                     </li>
                 ))}
             </ul>
