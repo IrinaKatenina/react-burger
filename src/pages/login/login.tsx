@@ -42,6 +42,7 @@ export function LoginPage() {
                 value={emailValue}
                 name={'email'}
                 placeholder="E-mail"
+                autoComplete={"email"}
             />
 
             <PasswordInput
@@ -49,6 +50,7 @@ export function LoginPage() {
                 onChange={onPasswordChange}
                 value={passwordValue}
                 name={'password'}
+                autoComplete={"current-password"}
             />
 
             <Button extraClass={'mb-7'} htmlType="button" type="primary" size="medium" onClick={signIn}>

@@ -54,6 +54,7 @@ export function RegisterPage() {
                 error={false}
                 errorText={'Ошибка'}
                 size={'default'}
+                autoComplete={"name"}
             />
 
             <EmailInput
@@ -61,6 +62,7 @@ export function RegisterPage() {
                 value={emailValue}
                 name={'email'}
                 placeholder="E-mail"
+                autoComplete={"email"}
             />
 
             <PasswordInput
@@ -68,6 +70,7 @@ export function RegisterPage() {
                 onChange={onPasswordChange}
                 value={passwordValue}
                 name={'password'}
+                autoComplete={"current-password"}
             />
 
             <Button extraClass={'mb-7'} htmlType="button" type="primary" size="medium" onClick={onRegisterClick}>

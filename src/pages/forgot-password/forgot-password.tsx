@@ -40,6 +40,7 @@ export function ForgotPasswordPage() {
                 value={emailValue}
                 name={'email'}
                 placeholder="Укажите e-mail"
+                autoComplete={"email"}
             />
 
             <Button extraClass={'mb-7'} htmlType="button" type="primary" size="medium" onClick={onRecoverPassword}>

@@ -6,12 +6,13 @@ import clsx from "clsx";
 import {logout} from "../../services/user/actions.ts";
 import {useDispatch} from "react-redux";
 
+const USER_TEXT = "В этом разделе вы можете изменить свои персональные данные";
+const ORDERS_TEXT = "В этом разделе вы можете просмотреть свою историю заказов";
+
 export function ProfilePage() {
     const dispatch = useDispatch();
     const {pathname} = useLocation();
     const isOrdersPage = pathname?.endsWith("orders");
-    const userText = "В этом разделе вы можете изменить свои персональные данные";
-    const ordersText = "В этом разделе вы можете просмотреть свою историю заказов";
 
     const navLinkClassName = ({isActive}: NavLinkRenderProps) => clsx(
         "text text_type_main-medium",
@@ -35,7 +36,7 @@ export function ProfilePage() {
                     </Button>
                 </nav>
 
-                <p className="text text_type_main-default text_color_inactive">{isOrdersPage ? ordersText : userText}</p>
+                <p className="text text_type_main-default text_color_inactive">{isOrdersPage ? ORDERS_TEXT : USER_TEXT}</p>
             </div>
             <section className={styles.content}>
                 <Outlet/>
