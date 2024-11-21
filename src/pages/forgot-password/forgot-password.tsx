@@ -1,21 +1,22 @@
-import {useCallback, useState} from "react";
+import {ChangeEvent, useCallback, useState} from "react";
 import styles from "../login/login.module.css";
 import {Button, EmailInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import clsx from "clsx";
 import {api} from "../../utils/api.ts";
 import {useNavigate} from "react-router-dom";
+import {PasswordResetResponse} from "../../utils/model.ts";
 
 export function ForgotPasswordPage() {
     const [emailValue, setEmailValue] = useState('');
     const navigate = useNavigate();
 
-    const onEmailChange = useCallback(e => {
+    const onEmailChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setEmailValue(e.target.value);
     }, [setEmailValue]);
 
     const onRecoverPassword = useCallback(() => {
         api.passwordReset({email: emailValue})
-            .then((res: { success: boolean, message: string }) => {
+            .then((res: PasswordResetResponse) => {
                 if (res.success) {
                     navigate('/reset-password', {state: {fromForgot: 'forgot-password'}});
                 } else {

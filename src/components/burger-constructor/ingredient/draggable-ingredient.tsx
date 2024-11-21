@@ -1,7 +1,7 @@
 import styles from "../burger-constructor.module.css";
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {IngredientModel} from "../../../utils/model.ts";
-import {useCallback, useRef} from "react";
+import {FC, useCallback, useRef} from "react";
 import {MOVE_INGREDIENT, REMOVE_INGREDIENT} from "../../../services/burger-constructor/actions.ts";
 import {useDispatch} from "react-redux";
 import {useDrag, useDrop} from "react-dnd";
@@ -17,8 +17,7 @@ interface DragItem {
     item: IngredientModel
 }
 
-export const DraggableIngredient = (props: Props) => {
-    const {item, index} = props;
+export const DraggableIngredient: FC<Props> = ({item, index}) => {
     const dispatch = useDispatch();
 
     const handleClose = useCallback((ingredient: IngredientModel) => {
@@ -106,7 +105,7 @@ export const DraggableIngredient = (props: Props) => {
     dragRef(dropRef(ref));
 
     return (
-        <li className={styles.li} style={{ opacity }} ref={ref} data-handler-id={handlerId}>
+        <li className={styles.li} style={{opacity}} ref={ref} data-handler-id={handlerId}>
             <DragIcon className={styles.icon_drag} type="primary"/>
             <ConstructorElement
                 text={item.name}

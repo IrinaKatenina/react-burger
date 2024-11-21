@@ -4,7 +4,6 @@ import logger from "redux-logger";
 import {orderReducer} from "./order/reducer.ts";
 import {StateModel} from "../utils/model.ts";
 import {constructorReducer} from "./burger-constructor/reducer.ts";
-import {currentIngredientReducer} from "./current-ingredient/reducer.ts";
 import {userSlice} from "./user/slice.ts";
 
 
@@ -12,7 +11,6 @@ export const initialState: StateModel = {
     ingredients: {
         allIngredients: []
     },
-    currentIngredient: {model: null},
     burgerConstructor: {
         bun: null,
         ingredients: []
@@ -21,7 +19,6 @@ export const initialState: StateModel = {
 
 const rootReducer = combineReducers({
     ingredients: ingredientsReducer,
-    currentIngredient: currentIngredientReducer,
     burgerConstructor: constructorReducer,
     order: orderReducer,
     [userSlice.reducerPath]: userSlice.reducer,
@@ -37,7 +34,4 @@ export const configureStore = () => {
     });
 };
 
-
 export const store = configureStore();
-
-

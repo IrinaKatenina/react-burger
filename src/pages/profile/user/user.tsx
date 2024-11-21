@@ -1,27 +1,27 @@
 import styles from './user.module.css';
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useCallback, useEffect, useState} from "react";
+import {ChangeEvent, useCallback, useEffect, useState} from "react";
 import clsx from "clsx";
 import {useDispatch, useSelector} from "react-redux";
 import {getUser, setUser} from "../../../services/user/slice.ts";
 import {api} from "../../../utils/api.ts";
-import {TUser} from "../../../utils/model.ts";
+import {UserRequest, UserSaveResponse} from "../../../utils/model.ts";
 
 
 export const UserProfilePage = () => {
     const user = useSelector(getUser);
     const dispatch = useDispatch();
 
-    const initialFormState = {
+    const initialFormState: UserRequest = {
         name: user?.name ?? '',
         email: user?.email ?? '',
         password: '',
     };
 
-    const [formState, setFormState] = useState(initialFormState);
+    const [formState, setFormState] = useState<UserRequest>(initialFormState);
     const [isChanged, setIsChanged] = useState(false);
 
-    const handleChange = (e) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
         setFormState(prevState => ({
             ...prevState,
@@ -31,7 +31,7 @@ export const UserProfilePage = () => {
 
     useEffect(() => {
         const isFormChanged = Object.keys(initialFormState).some(
-            key => formState[key] !== initialFormState[key]
+            key => formState[key as keyof UserRequest] !== initialFormState[key as keyof UserRequest]
         );
         setIsChanged(isFormChanged);
     }, [formState]);
@@ -39,7 +39,7 @@ export const UserProfilePage = () => {
 
     const onSave = useCallback(() => {
         api.patchUser(formState)
-            .then((res: { success: boolean, user: TUser }) => {
+            .then((res: UserSaveResponse) => {
                 if (res.success) {
                     dispatch(setUser(res.user));
                 } else {

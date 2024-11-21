@@ -1,6 +1,6 @@
 import styles from './login.module.css';
 import {Button, EmailInput, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useCallback, useState} from "react";
+import {ChangeEvent, useCallback, useState} from "react";
 import clsx from "clsx";
 import {useNavigate} from "react-router-dom";
 import {login} from "../../services/user/actions.ts";
@@ -12,11 +12,11 @@ export function LoginPage() {
     const [emailValue, setEmailValue] = useState('')
     const [passwordValue, setPasswordValue] = useState('')
 
-    const onEmailChange = e => {
+    const onEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
         setEmailValue(e.target.value)
     }
 
-    const onPasswordChange = e => {
+    const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
         setPasswordValue(e.target.value)
     }
 
@@ -29,6 +29,7 @@ export function LoginPage() {
     }, []);
 
     const signIn = useCallback(() => {
+        // @ts-ignore
         dispatch(login({"email": emailValue, "password": passwordValue}));
     }, [emailValue, passwordValue]);
 

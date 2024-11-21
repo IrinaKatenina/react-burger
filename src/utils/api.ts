@@ -1,31 +1,37 @@
-import {TUser} from "./model.ts";
+import {
+    LoginResponse,
+    PasswordResetResponse,
+    refreshTokenResponse,
+    RegisterResponse, UserRequest,
+    UserResponse,
+    UserSaveResponse
+} from "./model.ts";
 
 const BURGER_API_URL = "https://norma.nomoreparties.space/api";
 
-const checkResponse = (res: Response) => {
-    return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+const checkResponse = <T>(res: Response): Promise<T> => {
+    return res.ok ? res.json() as Promise<T> : res.json().then((err) => Promise.reject(err));
 };
 
-const passwordReset = (data: { email: string }) => {
+const passwordReset = (data: { email: string }): Promise<PasswordResetResponse> => {
     return fetch(`${BURGER_API_URL}/password-reset`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(data)
-    }).then(checkResponse)
+    }).then(checkResponse<PasswordResetResponse>)
 };
 
-const passwordResetReset = (data: { password: string, token: string }) => {
+const passwordResetReset = (data: { password: string, token: string }): Promise<PasswordResetResponse> => {
     return fetch(`${BURGER_API_URL}/password-reset/reset`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(data)
-    }).then(checkResponse)
+    }).then(checkResponse<PasswordResetResponse>)
 };
-
 
 const register = (data: { email: string, password: string, name: string }) => {
     return fetch(`${BURGER_API_URL}/auth/register`, {
@@ -34,7 +40,7 @@ const register = (data: { email: string, password: string, name: string }) => {
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(data)
-    }).then(checkResponse)
+    }).then(checkResponse<RegisterResponse>)
 };
 
 
@@ -46,8 +52,8 @@ const login = (data: { email: string, password: string }) => {
         },
         body: JSON.stringify(data)
     })
-        .then(checkResponse)
-        .then((data: { success: boolean, accessToken: string, refreshToken: string, user: TUser}) => {
+        .then(checkResponse<LoginResponse>)
+        .then((data: LoginResponse) => {
             if (!data.success) {
                 return Promise.reject(data);
             }
@@ -68,8 +74,8 @@ const logout = () => {
         },
         body: JSON.stringify(data)
     })
-        .then(checkResponse)
-        .then((res) => {
+        .then(checkResponse<{ success: boolean }>)
+        .then((res: { success: boolean }) => {
             if (res.success) {
                 localStorage.removeItem("refreshToken");
                 localStorage.removeItem("accessToken");
@@ -80,9 +86,9 @@ const logout = () => {
 };
 
 
-const getUser = async (): Promise< { success: boolean, user: TUser }> => {
+const getUser = async (): Promise<UserResponse> => {
     try {
-        return await fetchWithRefresh(`${BURGER_API_URL}/auth/user`, {
+        return await fetchWithRefresh<UserResponse>(`${BURGER_API_URL}/auth/user`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -95,8 +101,7 @@ const getUser = async (): Promise< { success: boolean, user: TUser }> => {
     }
 };
 
-
-const patchUser = (data) => {
+const patchUser = (data: UserRequest): Promise<UserSaveResponse> => {
     return fetch(`${BURGER_API_URL}/auth/user`, {
         method: 'PATCH',
         headers: {
@@ -104,7 +109,7 @@ const patchUser = (data) => {
             'Authorization': localStorage.getItem("accessToken") ?? ""
         },
         body: JSON.stringify(data)
-    }).then(checkResponse)
+    }).then(checkResponse<UserSaveResponse>)
 };
 
 const refreshToken = () => {
@@ -117,10 +122,10 @@ const refreshToken = () => {
             token: localStorage.getItem("refreshToken"),
         }),
     })
-        .then(checkResponse)
+        .then(checkResponse<refreshTokenResponse>)
         // !! Важно для обновления токена в мидлваре, чтобы запись
         // была тут, а не в fetchWithRefresh
-        .then((refreshData: { success: boolean, accessToken: string, refreshToken: string }) => {
+        .then((refreshData: refreshTokenResponse) => {
             if (!refreshData.success) {
                 return Promise.reject(refreshData);
             }
@@ -130,21 +135,22 @@ const refreshToken = () => {
         });
 };
 
-export const fetchWithRefresh = async (url: string, options: RequestInit) => {
+export const fetchWithRefresh = async <T>(url: string, options: RequestInit): Promise<T> => {
     try {
-        if (options.headers) {
-            options.headers["authorization"] = localStorage.getItem("accessToken");
-        }
+        options.headers = options.headers || {};
+        (options.headers as Record<string, string>)["authorization"] = localStorage.getItem("accessToken") || "";
+
         const res = await fetch(url, options);
-        return await checkResponse(res);
+        return await checkResponse<T>(res);
     } catch (err) {
-        if (err.message === "jwt expired") {
+        if (err instanceof Error && err.message === "jwt expired") {
             const refreshData = await refreshToken(); //обновляем токен
-            if (options.headers) {
-                options.headers["authorization"] = refreshData.accessToken;
-            }
+
+            options.headers = options.headers || {};
+            (options.headers as Record<string, string>)["authorization"] = refreshData.accessToken || "";
+
             const res = await fetch(url, options); //повторяем запрос
-            return await checkResponse(res);
+            return await checkResponse<T>(res);
         } else {
             return Promise.reject(err);
         }

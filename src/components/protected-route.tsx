@@ -1,5 +1,5 @@
 import {Navigate, useLocation} from 'react-router-dom';
-import React from 'react';
+import React, {FC} from 'react';
 import {useSelector} from "react-redux";
 import {getIsAuthChecked, getUser} from "../services/user/slice.ts";
 
@@ -8,7 +8,7 @@ interface Props {
     component: React.JSX.Element;
 }
 
-export const ProtectedRouteElement = ({onlyUnAuth = false, component}: Props) => {
+export const ProtectedRouteElement: FC<Props> = ({onlyUnAuth = false, component}) => {
     const isAuthChecked = useSelector(getIsAuthChecked);
     const user = useSelector(getUser);
     const location = useLocation();
