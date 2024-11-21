@@ -1,7 +1,7 @@
 import {
     LoginResponse,
     PasswordResetResponse,
-    refreshTokenResponse,
+    RefreshTokenResponse,
     RegisterResponse, UserRequest,
     UserResponse,
     UserSaveResponse
@@ -122,10 +122,10 @@ const refreshToken = () => {
             token: localStorage.getItem("refreshToken"),
         }),
     })
-        .then(checkResponse<refreshTokenResponse>)
+        .then(checkResponse<RefreshTokenResponse>)
         // !! Важно для обновления токена в мидлваре, чтобы запись
         // была тут, а не в fetchWithRefresh
-        .then((refreshData: refreshTokenResponse) => {
+        .then((refreshData: RefreshTokenResponse) => {
             if (!refreshData.success) {
                 return Promise.reject(refreshData);
             }

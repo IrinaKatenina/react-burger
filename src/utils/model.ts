@@ -47,35 +47,26 @@ export type TUser = {
     name: string,
 }
 
-export type LoginResponse = {
-    success: boolean;
-    accessToken: string;
-    refreshToken: string;
-    user: TUser;
-}
-
 export type UserResponse = {
     success: boolean;
     user: TUser;
 }
 
-export type refreshTokenResponse = {
+export type UserSaveResponse = UserResponse;
+export type RegisterResponse = UserResponse;
+
+export type RefreshTokenResponse = {
     success: boolean;
     accessToken: string;
     refreshToken: string
 }
 
-export type RegisterResponse = {
-    success: boolean;
-    user: TUser
-}
+export type LoginResponse = RefreshTokenResponse & UserResponse;
 
 export interface OrderResponse {
-    name: string,
-    order: {
-        number: number
-    },
     success: boolean
+    name: string,
+    order: { number: number },
 }
 
 export interface PasswordResetResponse {
@@ -83,13 +74,6 @@ export interface PasswordResetResponse {
     message: string;
 }
 
-export interface UserSaveResponse {
-    success: boolean;
-    user: TUser;
-}
-
-export interface UserRequest {
-    name: string,
-    email: string,
+export type UserRequest = TUser & {
     password: string,
 }
