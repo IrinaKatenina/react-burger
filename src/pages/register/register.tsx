@@ -1,9 +1,10 @@
-import {useCallback, useState} from "react";
+import {ChangeEvent, useCallback, useState} from "react";
 import styles from "../login/login.module.css";
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import clsx from "clsx";
 import {useNavigate} from "react-router-dom";
 import {api} from "../../utils/api.ts";
+import {RegisterResponse} from "../../utils/model.ts";
 
 export function RegisterPage() {
     const [nameValue, setNameValue] = useState('');
@@ -11,15 +12,15 @@ export function RegisterPage() {
     const [passwordValue, setPasswordValue] = useState('');
     const navigate = useNavigate();
 
-    const onEmailChange = useCallback(e => {
+    const onEmailChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setEmailValue(e.target.value);
     }, []);
 
-    const onPasswordChange = useCallback(e => {
+    const onPasswordChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setPasswordValue(e.target.value);
     }, []);
 
-    const onNameChange = useCallback(e => {
+    const onNameChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setNameValue(e.target.value);
     }, []);
 
@@ -29,7 +30,7 @@ export function RegisterPage() {
 
     const onRegisterClick = useCallback(() => {
         api.register({"email": emailValue, "password": passwordValue, "name": nameValue})
-            .then((res: { "success": boolean, user: { "email": string, "name": string, } }) => {
+            .then((res: RegisterResponse) => {
                 if (res.success) {
                     navigate('/login');
                 } else {

@@ -21,6 +21,7 @@ export function ProfilePage() {
     );
 
     const onLogout = () => {
+        // @ts-ignore
         dispatch(logout());
     };
 

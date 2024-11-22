@@ -17,10 +17,11 @@ module.exports = {
             {allowConstantExport: true},
         ],
         "react/react-in-jsx-scope": "off",
-        "react/display-name":"off",
+        "react/display-name": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
         "@typescript-eslint/no-explicit-any": 'off',
-        "@typescript-eslint/no-unsafe-assignment":'off',
-        "@typescript-eslint/no-unsafe-member-access":'off'
+        "@typescript-eslint/no-unsafe-assignment": 'off',
+        "@typescript-eslint/no-unsafe-member-access": 'off'
     },
     parserOptions: {
         ecmaVersion: 'latest',

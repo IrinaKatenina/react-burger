@@ -4,16 +4,19 @@ import clsx from "clsx";
 import {IngredientModel} from "../../../utils/model";
 import {useDrag} from "react-dnd";
 import {Link, useLocation} from "react-router-dom";
+import React from "react";
 
-export const Ingredient = (props: {
+interface Props {
     ingredient: IngredientModel,
     count: number,
-}) => {
+}
+
+export const Ingredient = ({ingredient, count}: Props): React.JSX.Element => {
     const location = useLocation();
 
     const [{isDragging}, drag] = useDrag({
-        type: props.ingredient.type === "bun" ? "bun" : "ingredient",
-        item: props.ingredient,
+        type: ingredient.type === "bun" ? "bun" : "ingredient",
+        item: ingredient,
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
@@ -21,18 +24,18 @@ export const Ingredient = (props: {
 
     const opacity = isDragging ? 0.4 : 1
     return (
-        <Link key={props.ingredient._id}
-              to={`/ingredients/${props.ingredient._id}`}
+        <Link key={ingredient._id}
+              to={`/ingredients/${ingredient._id}`}
               state={{background: location}}
               className={styles.link}>
             <div className={styles.container} ref={drag} style={{opacity}} data-testid={`ingredient`}>
-                {!!props.count && <Counter count={props.count} size="default" extraClass="m-1"/>}
-                <img className={'pl-4 pr-4'} src={props.ingredient.image} alt={props.ingredient.name}/>
+                {!!count && <Counter count={count} size="default" extraClass="m-1"/>}
+                <img className={'pl-4 pr-4'} src={ingredient.image} alt={ingredient.name}/>
                 <div className={styles.price}>
-                    <p className={'text text_type_digits-default'}>{props.ingredient.price}</p>
+                    <p className={'text text_type_digits-default'}>{ingredient.price}</p>
                     <CurrencyIcon type="primary"/>
                 </div>
-                <p className={clsx('text text_type_main-default', styles.name)}>{props.ingredient.name}</p>
+                <p className={clsx('text text_type_main-default', styles.name)}>{ingredient.name}</p>
             </div>
         </Link>
     );

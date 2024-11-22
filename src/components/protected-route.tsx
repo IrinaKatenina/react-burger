@@ -8,7 +8,7 @@ interface Props {
     component: React.JSX.Element;
 }
 
-export const ProtectedRouteElement = ({onlyUnAuth = false, component}: Props) => {
+export const ProtectedRouteElement = ({onlyUnAuth = false, component}: Props): React.JSX.Element => {
     const isAuthChecked = useSelector(getIsAuthChecked);
     const user = useSelector(getUser);
     const location = useLocation();

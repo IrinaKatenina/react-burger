@@ -46,3 +46,34 @@ export type TUser = {
     email: string,
     name: string,
 }
+
+export type UserResponse = {
+    success: boolean;
+    user: TUser;
+}
+
+export type UserSaveResponse = UserResponse;
+export type RegisterResponse = UserResponse;
+
+export type RefreshTokenResponse = {
+    success: boolean;
+    accessToken: string;
+    refreshToken: string
+}
+
+export type LoginResponse = RefreshTokenResponse & UserResponse;
+
+export interface OrderResponse {
+    success: boolean
+    name: string,
+    order: { number: number },
+}
+
+export interface PasswordResetResponse {
+    success: boolean;
+    message: string;
+}
+
+export type UserRequest = TUser & {
+    password: string,
+}

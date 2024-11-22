@@ -1,9 +1,10 @@
 import styles from './reset-password.module.css';
 import {Button, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useCallback, useState} from "react";
+import {ChangeEvent, useCallback, useState} from "react";
 import clsx from "clsx";
 import {Navigate, useLocation, useNavigate} from "react-router-dom";
 import {api} from "../../utils/api.ts";
+import {PasswordResetResponse} from "../../utils/model.ts";
 
 export function ResetPasswordPage() {
     const [codeValue, setCodeValue] = useState('');
@@ -11,11 +12,11 @@ export function ResetPasswordPage() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const onPasswordChange = useCallback(e => {
+    const onPasswordChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setPasswordValue(e.target.value)
     }, [setPasswordValue]);
 
-    const onCodeChange = useCallback(e => {
+    const onCodeChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setCodeValue(e.target.value)
     }, [setCodeValue]);
 
@@ -23,7 +24,7 @@ export function ResetPasswordPage() {
         api.passwordResetReset({
             "password": passwordValue, "token": codeValue
         })
-            .then((res: { success: boolean, message: string }) => {
+            .then((res: PasswordResetResponse) => {
                 if (res.success) {
                     navigate("/login");
                 } else {

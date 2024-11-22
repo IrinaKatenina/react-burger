@@ -1,9 +1,10 @@
 import styles from "./overlay.module.css";
+import React from "react";
 
 interface Props {
     onClose: () => void;
 }
 
-export function ModalOverlay(props: Props) {
-    return <div className={styles.overlay} onClick={props.onClose}></div>;
+export const ModalOverlay = ({onClose}: Props): React.JSX.Element => {
+    return <div className={styles.overlay} onClick={onClose}></div>;
 }

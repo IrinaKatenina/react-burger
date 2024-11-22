@@ -1,18 +1,12 @@
 import {Dispatch} from "redux";
 import {makeOrderRequest} from "../../utils/order-api.ts";
 import {CLEAR_CONSTRUCTOR} from "../burger-constructor/actions.ts";
+import {OrderResponse} from "../../utils/model.ts";
 
 export const ORDER_LOADED = "SET_ORDER";
 export const ORDER_LOADING = 'LOADING';
 export const ORDER_ERROR = 'ERROR';
 
-interface OrderResponse {
-    name: string,
-    order: {
-        number: number
-    },
-    success: boolean
-}
 
 export const clearOrder = () => ({type: CLEAR_CONSTRUCTOR});
 

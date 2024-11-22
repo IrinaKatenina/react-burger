@@ -32,7 +32,8 @@ export const BurgerConstructor = () => {
         if (!user) {
             navigate("/login");
         } else {
-            const items = [bun?._id, ...ingredients.map(item => item?._id), bun?._id];
+            const items: string[] = [bun!._id, ...ingredients.map(item => item?._id), bun!._id];
+            // @ts-ignore
             dispatch(makeOrder({ingredients: items}));
 
             setPopupVisible(true);
