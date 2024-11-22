@@ -1,17 +1,16 @@
 import {createPortal} from "react-dom";
 import styles from "./modal.module.css";
-import React, {ReactNode, useCallback, useEffect} from "react";
+import React, {PropsWithChildren, useCallback, useEffect} from "react";
 import clsx from "clsx";
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ModalOverlay} from "./overlay/overlay.tsx";
 
 const modalRoot = document.body;
 
-interface Props {
-    children: ReactNode;
+type Props = PropsWithChildren<{
     header?: string;
     onClose: () => void;
-}
+}>;
 
 export const Modal = ({children, header, onClose}: Props): React.JSX.Element => {
     const onKeyDown = useCallback((e: KeyboardEvent) => {

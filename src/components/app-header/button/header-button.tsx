@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {PropsWithChildren} from 'react';
 import styles from './header-button.module.css';
 import clsx from 'clsx';
 
-interface Props extends React.PropsWithChildren<Omit<React.HTMLProps<HTMLButtonElement>, 'type' | 'size'>> {
+type Props = PropsWithChildren<{
     onClick?: () => void,
     active?: boolean
-}
+}>;
 
 export const HeaderButton = ({active, onClick, children}: Props): React.JSX.Element => {
     const className = clsx(
