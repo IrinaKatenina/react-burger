@@ -13,13 +13,13 @@ import {ResetPasswordPage} from "../../pages/reset-password/reset-password.tsx";
 import {OrdersPage} from "../../pages/profile/orders/orders.tsx";
 import {UserProfilePage} from "../../pages/profile/user/user.tsx";
 import {useDispatch} from "react-redux";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import {loadAllIngredients} from "../../services/ingredients/actions.ts";
 import {OnlyAuth, OnlyUnAuth} from "../protected-route.tsx";
 import {checkUserAuth} from "../../services/user/actions.ts";
 
 
-function App() {
+function App(): React.JSX.Element {
     const location = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();

@@ -3,8 +3,9 @@ import clsx from "clsx";
 import {useSelector} from "react-redux";
 import {getIngredientById} from "../../services/current-ingredient/selectors.ts";
 import {useParams} from "react-router-dom";
+import React from "react";
 
-export function IngredientDetails() {
+export function IngredientDetails(): React.JSX.Element | undefined {
 
     const {ingredientId} = useParams();
     const model = useSelector(getIngredientById(ingredientId));

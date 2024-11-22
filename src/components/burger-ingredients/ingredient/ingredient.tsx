@@ -4,14 +4,14 @@ import clsx from "clsx";
 import {IngredientModel} from "../../../utils/model";
 import {useDrag} from "react-dnd";
 import {Link, useLocation} from "react-router-dom";
-import {FC} from "react";
+import React from "react";
 
 interface Props {
     ingredient: IngredientModel,
     count: number,
 }
 
-export const Ingredient: FC<Props> = ({ingredient, count}) => {
+export const Ingredient = ({ingredient, count}: Props): React.JSX.Element => {
     const location = useLocation();
 
     const [{isDragging}, drag] = useDrag({

@@ -1,7 +1,7 @@
 import styles from "../burger-constructor.module.css";
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {IngredientModel} from "../../../utils/model.ts";
-import {FC, useCallback, useRef} from "react";
+import React, {useCallback, useRef} from "react";
 import {MOVE_INGREDIENT, REMOVE_INGREDIENT} from "../../../services/burger-constructor/actions.ts";
 import {useDispatch} from "react-redux";
 import {useDrag, useDrop} from "react-dnd";
@@ -17,7 +17,7 @@ interface DragItem {
     item: IngredientModel
 }
 
-export const DraggableIngredient: FC<Props> = ({item, index}) => {
+export const DraggableIngredient = ({item, index}: Props): React.JSX.Element => {
     const dispatch = useDispatch();
 
     const handleClose = useCallback((ingredient: IngredientModel) => {
@@ -32,7 +32,7 @@ export const DraggableIngredient: FC<Props> = ({item, index}) => {
     const ref = useRef<HTMLLIElement>(null);
     const [{handlerId}, dropRef] = useDrop<
         DragItem,
-        void,
+        unknown,
         { handlerId: Identifier | null }
     >({
         accept: "card",

@@ -1,4 +1,4 @@
-import {ChangeEvent, useCallback, useState} from "react";
+import React, {ChangeEvent, useCallback, useState} from "react";
 import styles from "../login/login.module.css";
 import {Button, EmailInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import clsx from "clsx";
@@ -6,7 +6,7 @@ import {api} from "../../utils/api.ts";
 import {useNavigate} from "react-router-dom";
 import {PasswordResetResponse} from "../../utils/model.ts";
 
-export function ForgotPasswordPage() {
+export function ForgotPasswordPage(): React.JSX.Element {
     const [emailValue, setEmailValue] = useState('');
     const navigate = useNavigate();
 

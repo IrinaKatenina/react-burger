@@ -5,8 +5,9 @@ import {BurgerIngredients} from "../../components/burger-ingredients/burger-ingr
 import {BurgerConstructor} from "../../components/burger-constructor/burger-constructor.tsx";
 import {useSelector} from "react-redux";
 import {getError, hasAllIngredientsData, isLoading} from "../../services/ingredients/selectors.ts";
+import React from "react";
 
-export function HomePage() {
+export function HomePage(): React.JSX.Element {
 
     const hasData = useSelector(hasAllIngredientsData);
     const loading = useSelector(isLoading);

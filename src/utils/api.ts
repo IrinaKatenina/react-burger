@@ -2,7 +2,8 @@ import {
     LoginResponse,
     PasswordResetResponse,
     RefreshTokenResponse,
-    RegisterResponse, UserRequest,
+    RegisterResponse,
+    UserRequest,
     UserResponse,
     UserSaveResponse
 } from "./model.ts";
@@ -33,7 +34,7 @@ const passwordResetReset = (data: { password: string, token: string }): Promise<
     }).then(checkResponse<PasswordResetResponse>)
 };
 
-const register = (data: { email: string, password: string, name: string }) => {
+const register = (data: { email: string, password: string, name: string }): Promise<RegisterResponse> => {
     return fetch(`${BURGER_API_URL}/auth/register`, {
         method: 'POST',
         headers: {
@@ -44,7 +45,7 @@ const register = (data: { email: string, password: string, name: string }) => {
 };
 
 
-const login = (data: { email: string, password: string }) => {
+const login = (data: { email: string, password: string }): Promise<LoginResponse> => {
     return fetch(`${BURGER_API_URL}/auth/login`, {
         method: 'POST',
         headers: {
@@ -64,7 +65,7 @@ const login = (data: { email: string, password: string }) => {
 };
 
 
-const logout = () => {
+const logout = (): Promise<void> => {
     const data = {token: localStorage.getItem("refreshToken")};
     return fetch(`${BURGER_API_URL}/auth/logout`, {
         method: 'POST',
@@ -112,7 +113,7 @@ const patchUser = (data: UserRequest): Promise<UserSaveResponse> => {
     }).then(checkResponse<UserSaveResponse>)
 };
 
-const refreshToken = () => {
+const refreshToken = (): Promise<RefreshTokenResponse> => {
     return fetch(`${BURGER_API_URL}/auth/token`, {
         method: "POST",
         headers: {

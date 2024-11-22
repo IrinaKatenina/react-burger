@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React from 'react';
 import styles from './header-button.module.css';
 import clsx from 'clsx';
 
@@ -7,7 +7,7 @@ interface Props extends React.PropsWithChildren<Omit<React.HTMLProps<HTMLButtonE
     active?: boolean
 }
 
-export const HeaderButton: FC<Props> = ({active, onClick, children}) => {
+export const HeaderButton = ({active, onClick, children}: Props): React.JSX.Element => {
     const className = clsx(
         'text text_type_main-default pt-4 pr-5 pb-4 pl-5',
         styles.button,
