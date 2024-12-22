@@ -2,7 +2,8 @@ import {StateModel} from "../../utils/model.ts";
 import {createSelector} from "@reduxjs/toolkit";
 
 export const hasAllIngredientsData = (store: StateModel) => !!store.ingredients.allIngredients?.length;
-// export const getAllIngredients = (store: StateModel) => store.ingredients.allIngredients;
+// TODO remove
+export const getAllIngredients = (store: StateModel) => store.ingredients.allIngredients;
 export const isLoading = (store: StateModel) => store.ingredients.loading;
 export const getError = (store: StateModel) => store.ingredients.error;
 

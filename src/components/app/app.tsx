@@ -17,6 +17,8 @@ import React, {useEffect} from "react";
 import {loadAllIngredients} from "../../services/ingredients/actions.ts";
 import {OnlyAuth, OnlyUnAuth} from "../protected-route.tsx";
 import {checkUserAuth} from "../../services/user/actions.ts";
+import {AllFeedPage} from "../../pages/all-orders/all-orders.tsx";
+import {FeedDetails} from "../feed-details/feed-details.tsx";
 
 
 function App(): React.JSX.Element {
@@ -41,6 +43,8 @@ function App(): React.JSX.Element {
             <main className={styles.main}>
                 <Routes location={background || location}>
                     <Route path="/" element={<HomePage/>}/>
+                    <Route path="/feed" element={<AllFeedPage/>}/>
+                    <Route path="/feed/:id" element={<OnlyAuth component={<FeedDetails/>}/>}/>
                     <Route path="/login" element={<OnlyUnAuth component={<LoginPage/>}/>}/>
                     <Route path="/register" element={<OnlyUnAuth component={<RegisterPage/>}/>}/>
                     <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPasswordPage/>}/>}/>
@@ -60,6 +64,14 @@ function App(): React.JSX.Element {
                             element={
                                 <Modal onClose={handleModalClose}>
                                     <IngredientDetails/>
+                                </Modal>
+                            }
+                        />
+                        <Route
+                            path='/feed/:id'
+                            element={
+                                <Modal onClose={handleModalClose}>
+                                    <FeedDetails/>
                                 </Modal>
                             }
                         />

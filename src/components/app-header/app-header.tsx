@@ -15,7 +15,7 @@ export const AppHeader = () => (
                         </HeaderButton>
                     )}
                 </NavLink>
-                <NavLink end to="/orders" className={styles.link}>
+                <NavLink end to="/feed" className={styles.link}>
                     {({isActive}) => (
                         <HeaderButton active={isActive}>
                             <ListIcon type={isActive ? "primary" : "secondary"}/>Лента заказов

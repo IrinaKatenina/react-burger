@@ -9,7 +9,8 @@ import {userSlice} from "./user/slice.ts";
 
 export const initialState: StateModel = {
     ingredients: {
-        allIngredients: []
+        allIngredients: [],
+        allIngredientsMap: new Map(),
     },
     burgerConstructor: {
         bun: null,

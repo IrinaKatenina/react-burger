@@ -16,6 +16,7 @@ export interface IngredientModel {
 
 export interface IngredientsStateModel {
     allIngredients: IngredientModel[],
+    allIngredientsMap: Map<string, IngredientModel>,
     loading?: boolean,
     error?: string
 }
@@ -77,3 +78,11 @@ export interface PasswordResetResponse {
 export type UserRequest = TUser & {
     password: string,
 }
+
+export type OrderModel = {
+    title: string
+    id: string;
+    date: string;
+    count: number;
+    ingredients: IngredientModel[]
+};
