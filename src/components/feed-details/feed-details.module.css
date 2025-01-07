@@ -58,14 +58,24 @@
     text-align: right;
 }
 
-.order_number {
+.order_number:not(.in_popup) {
+    width: 100%;
+    text-align: center;
+    margin-top: 60px;
+}
+
+.order_number.in_popup {
     position: absolute;
     top: 60px;
     left: 40px;
 }
 
-.status_ready {
+.status_done {
     color: #00CCCC;
+}
+
+.status_canceled {
+    color: red;
 }
 
 .toolbar {

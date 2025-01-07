@@ -2,57 +2,40 @@ import clsx from "clsx";
 import styles from "./orders.module.css";
 import {FeedWidget} from "../../../components/order-widget/feed-widget.tsx";
 import {useSelector} from "react-redux";
-import {getAllIngredients} from "../../../services/ingredients/selectors.ts";
-import {OrderModel} from "../../../utils/model.ts";
+import {useDispatch} from "../../../services/store.ts";
+import {useEffect} from "react";
+import {getProfileFeed} from "../../../services/profileFeed/slice.ts";
+import {wsProfileConnect, wsProfileDisconnect} from "../../../services/profileFeed/actions.ts";
+
+const WEBSOCKET_SERVER_URL: string = "wss://norma.nomoreparties.space/orders";
 
 export const OrdersPage = () => {
 
-    const ingredients = useSelector(getAllIngredients);
-    const orders: OrderModel[] = [
-        {
-            id: "034535",
-            count: 480,
-            date: "Сегодня 16:20",
-            title: "Death Star Starship Main бургер",
-            ingredients: ingredients.slice(0, 5)
-        },
-        {
-            id: "034535",
-            count: 560,
-            date: '2022-10-10T17:33:32.877Z',
-            title: "Interstellar бургер",
-            ingredients: ingredients.slice(0, 8)
-        },
-        {
-            id: "034536",
-            count: 560,
-            date: '2022-10-10T17:33:32.877Z',
-            title: "Interstellar бургер",
-            ingredients: ingredients.slice(0, 8)
-        },
-        {
-            id: "034537",
-            count: 560,
-            date: '2022-10-10T17:33:32.877Z',
-            title: "Interstellar бургер",
-            ingredients: ingredients.slice(0, 8)
-        },
-        {
-            id: "034538",
-            count: 560,
-            date: '2022-10-10T17:33:32.877Z',
-            title: "Interstellar бургер",
-            ingredients: ingredients.slice(0, 8)
+    const dispatch = useDispatch();
+
+    const accessToken = localStorage.getItem('accessToken')?.slice(7);
+    const connect = () => dispatch(wsProfileConnect(WEBSOCKET_SERVER_URL+`?token=${accessToken}`))
+    const disconnect = () => dispatch(wsProfileDisconnect());
+
+    useEffect(() => {
+        connect();
+
+        return () => {
+            disconnect();
         }
-    ];
+    }, []);
+
+    const profileFeedResponse = useSelector(getProfileFeed);
+    const orders = profileFeedResponse.orders;
 
     return (
-        <div className={styles.container}>
-            <div className={clsx(styles.orders_list, 'custom-scroll')}>
-                {orders.map((order) =>
-                    <FeedWidget key={order.id} order={order}/>
-                )}
+        !profileFeedResponse.success ? <p>Загрузка...</p> :
+            <div className={styles.container}>
+                <div className={clsx(styles.orders_list, 'custom-scroll')}>
+                    {orders.map((order) =>
+                        <FeedWidget key={order._id} order={order} profile={true}/>
+                    )}
+                </div>
             </div>
-        </div>
     )
 }

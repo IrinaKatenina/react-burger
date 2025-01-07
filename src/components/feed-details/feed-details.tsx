@@ -1,36 +1,84 @@
 import styles from "./feed-details.module.css";
-import React from "react";
-import {OrderModel} from "../../utils/model.ts";
-import {useSelector} from "react-redux";
+import React, {useEffect, useMemo} from "react";
 import {getAllIngredients} from "../../services/ingredients/selectors.ts";
 import {useParams} from "react-router-dom";
 import clsx from "clsx";
 import {CurrencyIcon, FormattedDate} from "@ya.praktikum/react-developer-burger-ui-components";
+import {useDispatch, useSelector} from "../../services/store.ts";
+import {countPrice} from "../../utils/ingredient-api.ts";
+import {IngredientModel, OrderModel} from "../../utils/model.ts";
+import {getOrderByNumber} from "../../services/order/actions.ts";
 
-export function FeedDetails(): React.JSX.Element | undefined {
+type FeedDetailsProps = {
+    inPopup?: boolean;
+}
 
-    const {id} = useParams();
-    const ingredients = useSelector(getAllIngredients);
-    const model: OrderModel = //useSelector(getOrderById(id));
-        {
-            id: "034535",
-            count: 480,
-            date: '2022-10-10T17:33:32.877Z',
-            title: "Death Star Starship Main бургер",
-            ingredients: ingredients.slice(0, 5)
-        };
+export function FeedDetails({inPopup}: FeedDetailsProps): React.JSX.Element | undefined {
 
-    const statusText = "Выполнен";
+    const dispatch = useDispatch();
+    const {number} = useParams();
+    const allIngredients = useSelector(getAllIngredients);
+
+    const order: OrderModel | undefined = useSelector(state => {
+        let order = state.feed.feed.orders.find(order => order.number === +number!);
+        if (order) {
+            return order;
+        }
+
+        order = state.profileFeed.feed.orders.find(order => order.number === +number!);
+        if (order) {
+            return order;
+        }
+
+        return state.order.currentOrder;
+    });
+
+    useEffect(() => {
+        if (!order) {
+            dispatch(getOrderByNumber(number ?? ""));
+        }
+    }, []);
+
+
+    const ingredients = useMemo(() => {
+        if (!order?.ingredients?.length) return [];
+
+        const ingredients = order.ingredients
+            .map(ingredientId => allIngredients.find(item => item._id === ingredientId))
+            .filter(item => !!item)
+
+        return ingredients.reduce((acc, curr) => {
+            const unique = acc.find(item => item._id === curr?._id);
+            if (!unique) {
+                curr.count=1;
+                acc.push(curr);
+            } else {
+                unique.count = (unique.count ?? 1) + 1;
+            }
+            return acc;
+        }, [] as IngredientModel[]);
+
+    }, [order?._id]);
+
+
+    const totalPrice = useMemo(() => countPrice(ingredients), [ingredients]);
+
+    if (!order) {
+        return <p>Загрузка...</p>
+    }
+
+    const statusText = order.status === "done" ? "Выполнен" : (order.status === "canceled" ? "Отменен" : "Готовится");
+
 
     return (
-        model && <div className={styles.container}>
-            <p className={clsx("text text_type_digits-default", styles.order_number)}>#{id}</p>
-            <p className="text text_type_main-medium mt-6">{model.title}</p>
-            <p className={clsx("text text_type_main-default mb-8", styles.status_ready)}>{statusText}</p>
+        order && <div className={clsx(styles.container)}>
+            <p className={clsx("text text_type_digits-default", styles.order_number, inPopup && styles.in_popup)}>#{number?.padStart(6, '0')}</p>
+            <p className="text text_type_main-medium mt-6">{order.name}</p>
+            <p className={clsx("text text_type_main-default mb-8", styles[`status_${order.status}`])}>{statusText}</p>
             <p className="text text_type_main-medium mt-8 mb-6">Состав:</p>
 
             <div className={clsx(styles.list, 'custom-scroll')}>
-                {model.ingredients.map((ingredient, index) =>
+                {ingredients.map((ingredient, index) =>
                     <div key={ingredient._id} className={styles.ingredient_container}>
                         <div className={styles.ingredient_container_part}>
                             <div key={index} className={styles.img_container}>
@@ -39,8 +87,9 @@ export function FeedDetails(): React.JSX.Element | undefined {
                             <p className="text text_type_main-default">{ingredient.name}</p>
                         </div>
                         <div className={styles.ingredient_container_part}>
-                            <p className={clsx("text text_type_digits-default", styles.price)}>1
-                                x {ingredient.price}</p>
+                            <p className={clsx("text text_type_digits-default", styles.price)}>
+                                {ingredient.count ?? 1} x {ingredient.price}
+                            </p>
                             <CurrencyIcon type="primary"/>
                         </div>
                     </div>
@@ -50,10 +99,10 @@ export function FeedDetails(): React.JSX.Element | undefined {
             <div className={styles.toolbar}>
                 <span
                     className="text text_type_main-default text_color_inactive">
-                    <FormattedDate date={new Date(model.date)}/>
+                    <FormattedDate date={new Date(order.createdAt)}/>
                 </span>
                 <div className={styles.toolbar_price}>
-                    <p className={clsx("text text_type_digits-default", styles.price)}>{model.count}</p>
+                    <p className={clsx("text text_type_digits-default", styles.price)}>{totalPrice}</p>
                     <CurrencyIcon type="primary"/>
                 </div>
             </div>

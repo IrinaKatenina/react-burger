@@ -3,9 +3,9 @@ import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger
 import {IngredientModel} from "../../../utils/model.ts";
 import React, {useCallback, useRef} from "react";
 import {MOVE_INGREDIENT, REMOVE_INGREDIENT} from "../../../services/burger-constructor/actions.ts";
-import {useDispatch} from "react-redux";
 import {useDrag, useDrop} from "react-dnd";
 import type {Identifier, XYCoord} from 'dnd-core'
+import {useDispatch} from "../../../services/store.ts";
 
 interface Props {
     item: IngredientModel,

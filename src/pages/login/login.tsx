@@ -4,7 +4,7 @@ import {ChangeEvent, useCallback, useState} from "react";
 import clsx from "clsx";
 import {useNavigate} from "react-router-dom";
 import {login} from "../../services/user/actions.ts";
-import {useDispatch} from "react-redux";
+import {useDispatch} from "../../services/store.ts";
 
 export function LoginPage() {
     const navigate = useNavigate();
@@ -29,7 +29,6 @@ export function LoginPage() {
     }, []);
 
     const signIn = useCallback(() => {
-        // @ts-ignore
         dispatch(login({"email": emailValue, "password": passwordValue}));
     }, [emailValue, passwordValue]);
 

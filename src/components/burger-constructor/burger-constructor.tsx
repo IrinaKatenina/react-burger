@@ -4,7 +4,6 @@ import {Button, ConstructorElement, CurrencyIcon} from "@ya.praktikum/react-deve
 import {useMemo, useState} from "react";
 import {Modal} from "../modal/modal.tsx";
 import {OrderDetails} from "../order-details/order-details.tsx";
-import {useDispatch, useSelector} from "react-redux";
 import {clearOrder, makeOrder} from "../../services/order/actions.ts";
 import {getConstructorIngredients} from "../../services/burger-constructor/selectors.ts";
 import {useDrop} from "react-dnd";
@@ -14,6 +13,7 @@ import {DraggableIngredient} from "./ingredient/draggable-ingredient.tsx";
 import {nanoid} from "@reduxjs/toolkit";
 import {getUser} from "../../services/user/slice.ts";
 import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "../../services/store.ts";
 
 export const BurgerConstructor = () => {
     const dispatch = useDispatch();
@@ -33,7 +33,6 @@ export const BurgerConstructor = () => {
             navigate("/login");
         } else {
             const items: string[] = [bun!._id, ...ingredients.map(item => item?._id), bun!._id];
-            // @ts-ignore
             dispatch(makeOrder({ingredients: items}));
 
             setPopupVisible(true);
