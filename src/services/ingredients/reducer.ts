@@ -3,20 +3,15 @@ import {ActionModel, IngredientModel, IngredientsStateModel} from "../../utils/m
 
 const initialState: IngredientsStateModel = {
     allIngredients: [],
-    allIngredientsMap: new Map<string, IngredientModel>(),
     loading: false,
     error: undefined
 }
 export const ingredientsReducer = (state: IngredientsStateModel = initialState, action: ActionModel) => {
     switch (action.type) {
         case SET_ALL_INGREDIENTS: {
-            const allIngredientsMap = (action.payload as Array<IngredientModel>)
-                .reduce((map, ingredient) =>
-                    map.set(ingredient._id, ingredient), new Map<string, IngredientModel>());
             return {
                 ...state,
                 allIngredients: [...action.payload as Array<IngredientModel>],
-                allIngredientsMap: allIngredientsMap,
                 loading: false,
                 error: undefined
             };

@@ -17,7 +17,6 @@ export interface IngredientModel {
 
 export interface IngredientsStateModel {
     allIngredients: IngredientModel[],
-    allIngredientsMap: Map<string, IngredientModel>,
     loading?: boolean,
     error?: string
 }

@@ -25,7 +25,6 @@ import {wsProfileConnect, wsProfileDisconnect} from "./profileFeed/actions.ts";
 export const initialState: StateModel = {
     ingredients: {
         allIngredients: [],
-        allIngredientsMap: new Map(),
     },
     burgerConstructor: {
         bun: null,
