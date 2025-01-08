@@ -56,7 +56,13 @@ export const UserProfilePage = () => {
     }, []);
 
     return (
-        <div className={clsx('mt-10', styles.container)}>
+        <form className={clsx('mt-10', styles.container)}
+              onSubmit={(e) => {
+                  if (isChanged) {
+                      onSave();
+                  }
+                  e.preventDefault();
+              }}>
             <Input
                 type={'text'}
                 placeholder={'Имя'}
@@ -91,11 +97,11 @@ export const UserProfilePage = () => {
                         Отмена
                     </Button>
 
-                    <Button htmlType="button" type="primary" size="medium" onClick={onSave}>
+                    <Button htmlType="submit" type="primary" size="medium">
                         Сохранить
                     </Button>
                 </div>
             }
-        </div>
+        </form>
     );
 }

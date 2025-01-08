@@ -33,7 +33,11 @@ export function ForgotPasswordPage(): React.JSX.Element {
     }, []);
 
     return (
-        <div className={styles.container}>
+        <form className={styles.container}
+              onSubmit={(e) => {
+                  onRecoverPassword();
+                  e.preventDefault();
+              }}>
             <h1 className={'text text_type_main-medium'}>Восстановление пароля</h1>
 
             <EmailInput
@@ -44,7 +48,7 @@ export function ForgotPasswordPage(): React.JSX.Element {
                 autoComplete={"email"}
             />
 
-            <Button extraClass={'mb-7'} htmlType="button" type="primary" size="medium" onClick={onRecoverPassword}>
+            <Button extraClass={'mb-7'} htmlType="submit" type="primary" size="medium">
                 Восстановить
             </Button>
 
@@ -54,6 +58,7 @@ export function ForgotPasswordPage(): React.JSX.Element {
                             size="medium" onClick={onLoginClick}>Войти</Button>
                 </p>
             </div>
-        </div>
-    );
+        </form>
+)
+    ;
 }
