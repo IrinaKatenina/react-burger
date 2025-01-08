@@ -43,7 +43,7 @@ export const FeedWidget = ({order, profile}: Props): React.JSX.Element => {
                 <div className={styles.row_container}>
                     <div className={styles.ingredient_list}>
                         {visibleIngredients.map((ingredient, index) =>
-                            <div key={ingredient._id}
+                            <div key={`${ingredient._id}_${index}`}
                                  className={clsx(styles.ingredient, index === visibleIngredients.length - 1 && additionalCount > 0 && styles.ingredient_opacity,)}
                                  style={{zIndex: visibleIngredients.length - index}}
                                  title={ingredient.name}>

@@ -1,8 +1,7 @@
 import clsx from "clsx";
 import styles from "./orders.module.css";
 import {FeedWidget} from "../../../components/order-widget/feed-widget.tsx";
-import {useSelector} from "react-redux";
-import {useDispatch} from "../../../services/store.ts";
+import {useDispatch, useSelector} from "../../../services/store.ts";
 import {useEffect} from "react";
 import {getProfileFeed} from "../../../services/profileFeed/slice.ts";
 import {wsProfileConnect, wsProfileDisconnect} from "../../../services/profileFeed/actions.ts";

@@ -2,10 +2,10 @@ import styles from './user.module.css';
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {ChangeEvent, useCallback, useEffect, useState} from "react";
 import clsx from "clsx";
-import {useDispatch, useSelector} from "react-redux";
 import {getUser, setUser} from "../../../services/user/slice.ts";
 import {api} from "../../../utils/api.ts";
 import {UserRequest, UserSaveResponse} from "../../../utils/model.ts";
+import {useDispatch, useSelector} from "../../../services/store.ts";
 
 
 export const UserProfilePage = () => {

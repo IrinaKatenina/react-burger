@@ -2,8 +2,7 @@ import styles from './all-orders.module.css';
 import clsx from "clsx";
 import React, {useEffect} from "react";
 import {FeedWidget} from "../../components/order-widget/feed-widget.tsx";
-import {useSelector} from "react-redux";
-import {useDispatch} from "../../services/store.ts";
+import {useDispatch, useSelector} from "../../services/store.ts";
 import {wsConnect, wsDisconnect} from "../../services/feed/actions.ts";
 import {getFeed} from "../../services/feed/slice.ts";
 

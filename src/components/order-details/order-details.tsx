@@ -1,7 +1,7 @@
 import styles from "./order-details.module.css";
 import clsx from "clsx";
-import {useSelector} from "react-redux";
 import {getError, getOrderNumber, isLoading} from "../../services/order/selectors.ts";
+import {useSelector} from "../../services/store.ts";
 
 const IMAGE_URL = 'src/images/done.png';
 

@@ -3,8 +3,8 @@ import styles from './burger-ingredients.module.css';
 import clsx from "clsx";
 import {Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import {IngredientList} from "./ingredient-list/ingredient-list";
-import {useSelector} from "react-redux";
 import {getIngredientsByType} from "../../services/ingredients/selectors.ts";
+import {useSelector} from "../../services/store.ts";
 
 export const BurgerIngredients = () => {
     const [currentTab, setCurrentTab] = React.useState('bun');

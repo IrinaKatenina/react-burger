@@ -1,9 +1,9 @@
 import styles from "./ingredient-details.module.css";
 import clsx from "clsx";
-import {useSelector} from "react-redux";
 import {getIngredientById} from "../../services/current-ingredient/selectors.ts";
 import {useParams} from "react-router-dom";
 import React from "react";
+import {useSelector} from "../../services/store.ts";
 
 export function IngredientDetails(): React.JSX.Element | undefined {
 
