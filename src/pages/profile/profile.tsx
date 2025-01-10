@@ -4,7 +4,7 @@ import {Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./profile.module.css";
 import clsx from "clsx";
 import {logout} from "../../services/user/actions.ts";
-import {useDispatch} from "react-redux";
+import {useDispatch} from "../../services/store.ts";
 
 const USER_TEXT = "В этом разделе вы можете изменить свои персональные данные";
 const ORDERS_TEXT = "В этом разделе вы можете просмотреть свою историю заказов";
@@ -21,8 +21,7 @@ export function ProfilePage() {
     );
 
     const onLogout = () => {
-        // @ts-ignore
-        dispatch(logout());
+        void dispatch(logout());
     };
 
     return (

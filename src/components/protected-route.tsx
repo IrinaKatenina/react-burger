@@ -1,7 +1,7 @@
 import {Navigate, useLocation} from 'react-router-dom';
 import React from 'react';
-import {useSelector} from "react-redux";
 import {getIsAuthChecked, getUser} from "../services/user/slice.ts";
+import {useSelector} from "../services/store.ts";
 
 interface Props {
     onlyUnAuth?: boolean,

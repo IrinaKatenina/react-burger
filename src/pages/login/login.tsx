@@ -4,7 +4,7 @@ import {ChangeEvent, useCallback, useState} from "react";
 import clsx from "clsx";
 import {useNavigate} from "react-router-dom";
 import {login} from "../../services/user/actions.ts";
-import {useDispatch} from "react-redux";
+import {useDispatch} from "../../services/store.ts";
 
 export function LoginPage() {
     const navigate = useNavigate();
@@ -29,8 +29,7 @@ export function LoginPage() {
     }, []);
 
     const signIn = useCallback(() => {
-        // @ts-ignore
-        dispatch(login({"email": emailValue, "password": passwordValue}));
+        void dispatch(login({"email": emailValue, "password": passwordValue}));
     }, [emailValue, passwordValue]);
 
 
@@ -38,25 +37,27 @@ export function LoginPage() {
         <div className={styles.container}>
             <h1 className={'text text_type_main-medium'}>Вход</h1>
 
-            <EmailInput
-                onChange={onEmailChange}
-                value={emailValue}
-                name={'email'}
-                placeholder="E-mail"
-                autoComplete={"email"}
-            />
+            <form onSubmit={(e) => {signIn(); e.preventDefault();}} className={styles.form}>
+                <EmailInput
+                    onChange={onEmailChange}
+                    value={emailValue}
+                    name={'email'}
+                    placeholder="E-mail"
+                    autoComplete={"email"}
+                />
 
-            <PasswordInput
-                placeholder={'Пароль'}
-                onChange={onPasswordChange}
-                value={passwordValue}
-                name={'password'}
-                autoComplete={"current-password"}
-            />
+                <PasswordInput
+                    placeholder={'Пароль'}
+                    onChange={onPasswordChange}
+                    value={passwordValue}
+                    name={'password'}
+                    autoComplete={"current-password"}
+                />
 
-            <Button extraClass={'mb-7'} htmlType="button" type="primary" size="medium" onClick={signIn}>
-                Войти
-            </Button>
+                <Button extraClass={'mb-7'} htmlType="submit" type="primary" size="medium" >
+                    Войти
+                </Button>
+            </form>
 
             <div className={clsx(styles.footer, 'mt-7')}>
                 <p className={clsx(styles.footer_text, 'text_color_inactive')}>Вы - новый пользователь?

@@ -165,5 +165,6 @@ export const api = {
     logout,
     register,
     getUser,
-    patchUser
+    patchUser,
+    refreshToken
 }

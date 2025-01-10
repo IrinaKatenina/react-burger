@@ -8,13 +8,14 @@ const initialState: IngredientsStateModel = {
 }
 export const ingredientsReducer = (state: IngredientsStateModel = initialState, action: ActionModel) => {
     switch (action.type) {
-        case SET_ALL_INGREDIENTS:
+        case SET_ALL_INGREDIENTS: {
             return {
                 ...state,
                 allIngredients: [...action.payload as Array<IngredientModel>],
                 loading: false,
                 error: undefined
             };
+        }
         case ALL_INGREDIENTS_LOADING:
             return {
                 ...state,

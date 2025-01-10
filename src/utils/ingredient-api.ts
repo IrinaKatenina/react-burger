@@ -1,3 +1,5 @@
+import {IngredientModel} from "./model.ts";
+
 const URL = 'https://norma.nomoreparties.space/api/ingredients';
 
 export const getAllIngredients = () => {
@@ -9,3 +11,7 @@ export const getAllIngredients = () => {
             return Promise.reject(`Ошибка ${res.status}`);
         })
 };
+
+export const countPrice = (ingredients: IngredientModel[]) => {
+    return ingredients.reduce((acc, item) => acc + (item.price * (item.count || 1)), 0);
+}

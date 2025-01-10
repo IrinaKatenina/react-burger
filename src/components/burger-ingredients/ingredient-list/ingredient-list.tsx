@@ -3,8 +3,8 @@ import styles from "./ingredient-list.module.css";
 import clsx from "clsx";
 import {IngredientModel} from "../../../utils/model";
 import {forwardRef, useMemo} from "react";
-import {useSelector} from "react-redux";
 import {getConstructorIngredients} from "../../../services/burger-constructor/selectors.ts";
+import {useSelector} from "../../../services/store.ts";
 
 interface Props {
     onClick?: () => void,

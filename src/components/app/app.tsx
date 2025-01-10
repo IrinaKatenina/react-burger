@@ -12,11 +12,13 @@ import {Modal} from "../modal/modal.tsx";
 import {ResetPasswordPage} from "../../pages/reset-password/reset-password.tsx";
 import {OrdersPage} from "../../pages/profile/orders/orders.tsx";
 import {UserProfilePage} from "../../pages/profile/user/user.tsx";
-import {useDispatch} from "react-redux";
 import React, {useEffect} from "react";
 import {loadAllIngredients} from "../../services/ingredients/actions.ts";
 import {OnlyAuth, OnlyUnAuth} from "../protected-route.tsx";
 import {checkUserAuth} from "../../services/user/actions.ts";
+import {AllFeedPage} from "../../pages/all-orders/all-orders.tsx";
+import {FeedDetails} from "../feed-details/feed-details.tsx";
+import {useDispatch} from "../../services/store.ts";
 
 
 function App(): React.JSX.Element {
@@ -26,10 +28,8 @@ function App(): React.JSX.Element {
     const background = location.state && location.state.background;
 
     useEffect(() => {
-        // @ts-ignore
         dispatch(loadAllIngredients());
-        // @ts-ignore
-        dispatch(checkUserAuth());
+        void dispatch(checkUserAuth());
     }, [dispatch]);
 
     // Возвращаемся к предыдущему пути при закрытии модалки
@@ -41,6 +41,8 @@ function App(): React.JSX.Element {
             <main className={styles.main}>
                 <Routes location={background || location}>
                     <Route path="/" element={<HomePage/>}/>
+                    <Route path="/feed" element={<AllFeedPage/>}/>
+                    <Route path="/feed/:number" element={<FeedDetails/>}/>
                     <Route path="/login" element={<OnlyUnAuth component={<LoginPage/>}/>}/>
                     <Route path="/register" element={<OnlyUnAuth component={<RegisterPage/>}/>}/>
                     <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPasswordPage/>}/>}/>
@@ -48,6 +50,7 @@ function App(): React.JSX.Element {
                     <Route path="/profile" element={<OnlyAuth component={<ProfilePage/>}/>}>
                         <Route path="" element={<UserProfilePage/>}/>
                         <Route path="orders" element={<OrdersPage/>}/>
+                        <Route path="orders/:number" element={<FeedDetails/>}/>
                     </Route>
                     <Route path="/ingredients/:ingredientId" element={<OnlyAuth component={<IngredientDetails/>}/>}/>
                     <Route path="*" element={<NotFound404/>}/>
@@ -60,6 +63,22 @@ function App(): React.JSX.Element {
                             element={
                                 <Modal onClose={handleModalClose}>
                                     <IngredientDetails/>
+                                </Modal>
+                            }
+                        />
+                        <Route
+                            path='/feed/:number'
+                            element={
+                                <Modal onClose={handleModalClose}>
+                                    <FeedDetails inPopup={true}/>
+                                </Modal>
+                            }
+                        />
+                        <Route
+                            path='/profile/orders/:number'
+                            element={
+                                <Modal onClose={handleModalClose}>
+                                    <FeedDetails inPopup={true}/>
                                 </Modal>
                             }
                         />

@@ -43,7 +43,8 @@ export function RegisterPage() {
     }, [emailValue, passwordValue, nameValue]);
 
     return (
-        <div className={styles.container}>
+        <form className={styles.container}
+              onSubmit={(e) => {onRegisterClick(); e.preventDefault();}}>
             <h1 className={'text text_type_main-medium'}>Регистрация</h1>
 
             <Input
@@ -74,7 +75,7 @@ export function RegisterPage() {
                 autoComplete={"current-password"}
             />
 
-            <Button extraClass={'mb-7'} htmlType="button" type="primary" size="medium" onClick={onRegisterClick}>
+            <Button extraClass={'mb-7'} htmlType="submit" type="primary" size="medium">
                 Зарегистироваться
             </Button>
 
@@ -84,6 +85,6 @@ export function RegisterPage() {
                             size="medium" onClick={onLoginClick}>Войти</Button>
                 </p>
             </div>
-        </div>
+        </form>
     );
 }

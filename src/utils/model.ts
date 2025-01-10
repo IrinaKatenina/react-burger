@@ -12,6 +12,7 @@ export interface IngredientModel {
     image_large: string;
     __v: number;
     key?: string
+    count?: number;
 }
 
 export interface IngredientsStateModel {
@@ -29,6 +30,7 @@ export interface OrderStateModel {
     orderNumber?: string
     loading?: boolean,
     error?: string
+    currentOrder?: OrderModel
 }
 
 export interface StateModel {
@@ -76,4 +78,20 @@ export interface PasswordResetResponse {
 
 export type UserRequest = TUser & {
     password: string,
+}
+
+export type OrderModel = {
+    name: string
+    _id: string;
+    ingredients: string[],
+    status: "done" | "pending" | "canceled" | "created",
+    number: number, // ??
+    createdAt: string,
+    updatedAt: string
+};
+
+export enum WebsocketStatus {
+    CONNECTING = 'CONNECTING...',
+    ONLINE = 'ONLINE',
+    OFFLINE = 'OFFLINE',
 }
