@@ -1,7 +1,7 @@
 import {ALL_INGREDIENTS_ERROR, ALL_INGREDIENTS_LOADING, SET_ALL_INGREDIENTS} from "./actions.ts";
 import {ActionModel, IngredientModel, IngredientsStateModel} from "../../utils/model.ts";
 
-const initialState: IngredientsStateModel = {
+export const initialState: IngredientsStateModel = {
     allIngredients: [],
     loading: false,
     error: undefined

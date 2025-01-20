@@ -1,7 +1,7 @@
 import {ActionModel, OrderModel, OrderStateModel} from "../../utils/model.ts";
 import {CURRENT_ORDER_LOADED, ORDER_ERROR, ORDER_LOADED, ORDER_LOADING} from "./actions.ts";
 
-const initialState: OrderStateModel = {
+export const initialState: OrderStateModel = {
     orderNumber: undefined,
     loading: false,
     error: undefined,

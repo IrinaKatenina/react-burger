@@ -85,7 +85,7 @@ export type OrderModel = {
     _id: string;
     ingredients: string[],
     status: "done" | "pending" | "canceled" | "created",
-    number: number, // ??
+    number: number,
     createdAt: string,
     updatedAt: string
 };

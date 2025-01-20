@@ -14,7 +14,7 @@ export type FeedResponse = {
     totalToday: number;
 }
 
-const initialState: FeedStore = {
+export const initialState: FeedStore = {
     status: WebsocketStatus.OFFLINE,
     feed: {success: false, orders: [], total: 0, totalToday: 0},
     error: null,
