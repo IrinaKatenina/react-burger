@@ -1,6 +1,7 @@
 # Project link
 
-http://158.160.159.232
+https://stellar.frontend.nomorepartiesco.ru
+158.160.159.232
 
 
 
