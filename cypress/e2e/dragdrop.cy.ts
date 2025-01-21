@@ -8,7 +8,7 @@ describe('Application', () => {
         cy.intercept("GET", "api/ingredients", {fixture: "ingredients.json"});
         cy.intercept("GET", "api/auth/user", {fixture: "me.json"});
 
-        cy.visit('http://localhost:5173/');
+        cy.visit('/');
         cy.contains("Соберите бургер");
         cy.get('[data-testid=bun]').first().as('bun');
         cy.get('[data-testid=ingredient]').first().as('ingredient');

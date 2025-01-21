@@ -5,7 +5,7 @@ describe('Application', () => {
     beforeEach(function () {
         cy.intercept("GET", "api/ingredients", {fixture: "ingredients.json"});
 
-        cy.visit('http://localhost:5173/');
+        cy.visit('/');
         cy.contains("Соберите бургер");
 
         cy.get('[data-testid=ingredient]').first().as('ingredient');
