@@ -20,10 +20,8 @@ describe('ingredients reducer', () => {
                 })
         ).toEqual(
             {
+                ...initialState,
                 orderNumber: "123456",
-                loading: false,
-                error: undefined,
-                currentOrder: undefined,
             }
         );
     })
@@ -37,10 +35,8 @@ describe('ingredients reducer', () => {
                 })
         ).toEqual(
             {
-                orderNumber: undefined,
+                ...initialState,
                 loading: true,
-                error: undefined,
-                currentOrder: undefined,
             }
         );
     })
@@ -55,10 +51,8 @@ describe('ingredients reducer', () => {
                 })
         ).toEqual(
             {
-                orderNumber: undefined,
-                loading: false,
+                ...initialState,
                 error: "error",
-                currentOrder: undefined,
             }
         );
     })
@@ -83,9 +77,8 @@ describe('ingredients reducer', () => {
                 })
         ).toEqual(
             {
+                ...initialState,
                 orderNumber: undefined,
-                loading: false,
-                error: undefined,
                 currentOrder: orderModel,
             }
         );

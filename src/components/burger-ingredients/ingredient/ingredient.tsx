@@ -28,14 +28,14 @@ export const Ingredient = ({ingredient, count}: Props): React.JSX.Element => {
               to={`/ingredients/${ingredient._id}`}
               state={{background: location}}
               className={styles.link}>
-            <div className={styles.container} ref={drag} style={{opacity}} data-testid={`ingredient`}>
+            <div className={styles.container} ref={drag} style={{opacity}} data-testid={ingredient.type=== "bun" ? "bun" : "ingredient"}>
                 {!!count && <Counter count={count} size="default" extraClass="m-1"/>}
                 <img className={'pl-4 pr-4'} src={ingredient.image} alt={ingredient.name}/>
                 <div className={styles.price}>
                     <p className={'text text_type_digits-default'}>{ingredient.price}</p>
                     <CurrencyIcon type="primary"/>
                 </div>
-                <p className={clsx('text text_type_main-default', styles.name)}>{ingredient.name}</p>
+                <p className={clsx('text text_type_main-default', styles.name)} data-testId="ingredient_name">{ingredient.name}</p>
             </div>
         </Link>
     );

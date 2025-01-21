@@ -13,7 +13,7 @@ export function IngredientDetails(): React.JSX.Element | undefined {
     return (
         model && <div className={styles.container}>
             <img className={clsx('pl-4 pr-4 mb-4', styles.image)} src={model.image} alt={model.name}/>
-            <p className={'text text_type_main-medium mb-8'}>{model.name}</p>
+            <p className={'text text_type_main-medium mb-8'} data-testId="ingredient_details_name">{model.name}</p>
             <div className={styles.macronutrients}>
                 <div className={styles.macronutrient}>
                     <p className={'text text_type_main-default text_color_inactive'}>Калории, ккал</p>

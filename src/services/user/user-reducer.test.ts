@@ -15,6 +15,7 @@ describe('user reducer', () => {
             userSlice.reducer(undefined, {type: login.fulfilled.type, payload: userModel})
         ).toEqual(
             {
+                ...initialState,
                 user: userModel,
                 isAuthChecked: true,
             }
@@ -26,6 +27,7 @@ describe('user reducer', () => {
             userSlice.reducer(undefined, {type: login.rejected.type})
         ).toEqual(
             {
+                ...initialState,
                 user: null,
                 isAuthChecked: false,
             }

@@ -34,9 +34,8 @@ describe('ingredients reducer', () => {
                 })
         ).toEqual(
             {
+                ...initialState,
                 allIngredients: [mainIngredient],
-                loading: false,
-                error: undefined
             }
         );
     })
@@ -50,9 +49,8 @@ describe('ingredients reducer', () => {
                 })
         ).toEqual(
             {
-                allIngredients: [],
+                ...initialState,
                 loading: true,
-                error: undefined
             }
         );
     })
@@ -67,8 +65,8 @@ describe('ingredients reducer', () => {
                 })
         ).toEqual(
             {
+                ...initialState,
                 allIngredients: [],
-                loading: false,
                 error: 'error'
             }
         );

@@ -48,20 +48,21 @@ describe('constructor reducer', () => {
                 })
         ).toEqual(
             {
-                bun: null,
+                ...initialState,
                 ingredients: [mainIngredient]
             }
         );
 
         expect(
             constructorReducer(
-                {bun: bunIngredient, ingredients: []},
+                {...initialState, bun: bunIngredient, ingredients: []},
                 {
                     type: types.ADD_INGREDIENT,
                     payload: mainIngredient
                 })
         ).toEqual(
             {
+                ...initialState,
                 bun: bunIngredient,
                 ingredients: [mainIngredient]
             }
@@ -71,27 +72,28 @@ describe('constructor reducer', () => {
     it('should handle REMOVE_INGREDIENT', () => {
         expect(
             constructorReducer(
-                {bun: null, ingredients: [mainIngredient]},
+                {...initialState, ingredients: [mainIngredient]},
                 {
                     type: types.REMOVE_INGREDIENT,
                     payload: mainIngredient
                 })
         ).toEqual(
             {
-                bun: null,
+                ...initialState,
                 ingredients: []
             }
         );
 
         expect(
             constructorReducer(
-                {bun: bunIngredient, ingredients: [mainIngredient]},
+                {...initialState, bun: bunIngredient, ingredients: [mainIngredient]},
                 {
                     type: types.REMOVE_INGREDIENT,
                     payload: mainIngredient
                 })
         ).toEqual(
             {
+                ...initialState,
                 bun: bunIngredient,
                 ingredients: []
             }
@@ -99,17 +101,17 @@ describe('constructor reducer', () => {
     })
 
     it('should handle MOVE_INGREDIENT', () => {
-        const secondIngredient = {...mainIngredient, _id:'2'};
+        const secondIngredient = {...mainIngredient, _id: '2'};
         expect(
             constructorReducer(
-                {bun: null, ingredients: [secondIngredient,mainIngredient]},
+                {...initialState, ingredients: [secondIngredient, mainIngredient]},
                 {
                     type: types.MOVE_INGREDIENT,
                     payload: {toIndex: 1, fromIndex: 0}
                 })
         ).toEqual(
             {
-                bun: null,
+                ...initialState,
                 ingredients: [mainIngredient, secondIngredient]
             }
         );
@@ -118,12 +120,11 @@ describe('constructor reducer', () => {
     it('should handle CLEAR_CONSTRUCTOR', () => {
         expect(
             constructorReducer(
-                {bun: null, ingredients: [ mainIngredient]},
+                {...initialState, ingredients: [mainIngredient]},
                 {type: types.CLEAR_CONSTRUCTOR})
         ).toEqual(
             {
-                bun: null,
-                ingredients: []
+                ...initialState
             }
         );
     })
@@ -135,8 +136,8 @@ describe('constructor reducer', () => {
                 {type: types.UPDATE_BUN, payload: bunIngredient})
         ).toEqual(
             {
-                bun: bunIngredient,
-                ingredients: []
+                ...initialState,
+                bun: bunIngredient
             }
         );
     })
