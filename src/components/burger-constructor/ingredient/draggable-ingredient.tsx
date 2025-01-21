@@ -105,7 +105,7 @@ export const DraggableIngredient = ({item, index}: Props): React.JSX.Element => 
     dragRef(dropRef(ref));
 
     return (
-        <li className={styles.li} style={{opacity}} ref={ref} data-handler-id={handlerId}>
+        <li className={styles.li} style={{opacity}} ref={ref} data-handler-id={handlerId} data-testId="constructor_element">
             <DragIcon className={styles.icon_drag} type="primary"/>
             <ConstructorElement
                 text={item.name}

@@ -1,3 +1,10 @@
+# Project link
+
+https://stellar.frontend.nomorepartiesco.ru
+158.160.159.232
+
+
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

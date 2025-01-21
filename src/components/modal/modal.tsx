@@ -29,12 +29,13 @@ export const Modal = ({children, header, onClose}: Props): React.JSX.Element => 
 
     return createPortal(
         (<>
-            <div className={clsx('pt-10 pr-10 pb-15 pl-10', styles.modal)}>
-                <header className={styles.header}>
+            <div className={clsx('pt-10 pr-10 pb-15 pl-10', styles.modal)}
+                 data-testId="modal">
+                <header className={styles.header} data-testId="modal_header">
                     <p className={'text text_type_main-large'}>{header}</p>
                     <CloseIcon type="primary" className={styles.close} onClick={onClose}/>
                 </header>
-                <div className={styles.body}>{children}</div>
+                <div className={styles.body} data-testId="modal_body">{children}</div>
 
             </div>
             <ModalOverlay onClose={onClose}/>

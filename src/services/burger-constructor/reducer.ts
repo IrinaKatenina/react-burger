@@ -1,7 +1,7 @@
 import {ActionModel, ConstructorStateModel} from "../../utils/model.ts";
 import {ADD_INGREDIENT, CLEAR_CONSTRUCTOR, MOVE_INGREDIENT, REMOVE_INGREDIENT, UPDATE_BUN} from "./actions.ts";
 
-const initialState: ConstructorStateModel = {
+export const initialState: ConstructorStateModel = {
     bun: null,
     ingredients: []
 }

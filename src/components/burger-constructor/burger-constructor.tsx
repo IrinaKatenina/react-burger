@@ -84,10 +84,10 @@ export const BurgerConstructor = () => {
     }));
 
     return ((
-            <section className={clsx('pt-25 pl-4 pr-4', styles.container)}>
+            <section className={clsx('pt-25 pl-4 pr-4', styles.container)} data-testId="burger_constructor">
                 <ul className={styles.list}>
 
-                    <li key={bun?._id} className={clsx('pl-8', styles.li)} ref={bunTopDropRef}>
+                    <li key={bun?._id} className={clsx('pl-8', styles.li)} ref={bunTopDropRef} data-testId="burger_constructor_drop_bun">
                         {bun ?
                             <ConstructorElement
                                 extraClass={clsx((topBunCanDrop || bottomBunCanDrop) && '_active', topBunIsOver && '_over')}
@@ -109,7 +109,8 @@ export const BurgerConstructor = () => {
 
                     <div
                         className={clsx(styles.scroll, 'custom-scroll', ingredients?.length && canDrop && styles.scroll_active, ingredients?.length && mainIsOver && styles.scroll_over)}
-                        ref={mainDropRef}>
+                        ref={mainDropRef}
+                        data-testId="burger_constructor_drop_ingredients">
                         {ingredients?.length ?
                             ingredients.map((item, index) => (
                                 <DraggableIngredient key={item.key} item={item} index={index}/>
